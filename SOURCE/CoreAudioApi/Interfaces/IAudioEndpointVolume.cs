@@ -28,6 +28,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioEndpointVolume
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/
+
         [PreserveSig]
         int RegisterControlChangeNotify(IAudioEndpointVolumeCallback pNotify);
         [PreserveSig]

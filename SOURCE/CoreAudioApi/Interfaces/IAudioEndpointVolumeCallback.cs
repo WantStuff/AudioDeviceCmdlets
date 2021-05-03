@@ -29,6 +29,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioEndpointVolumeCallback 
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/
+
         [PreserveSig] int OnNotify(IntPtr pNotifyData);
     };
 

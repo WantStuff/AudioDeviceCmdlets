@@ -26,6 +26,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Structs
 {
     internal struct AUDIO_VOLUME_NOTIFICATION_DATA
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/
+
         public Guid   guidEventContext;
         public bool   bMuted;
         public float  fMasterVolume;

@@ -30,10 +30,10 @@ namespace AudioDeviceCmdlets
         // ID of the MMDevice ex: "{0.0.0.00000000}.{c4aadd95-74c7-4b3b-9508-b0ef36ff71ba}"
         public string ID;
         // The MMDevice itself
-        public MultiMediaDevice Device;
+        public MMDevice Device;
 
         // To be created, a new AudioDevice needs an Index, and the MMDevice it will communicate with
-        public AudioDevice(int Index, MultiMediaDevice BaseDevice, bool Default = false)
+        public AudioDevice(int Index, MMDevice BaseDevice, bool Default = false)
         {
             // Set this object's Index to the received integer
             this.Index = Index;
@@ -155,9 +155,9 @@ namespace AudioDeviceCmdlets
         protected override void ProcessRecord()
         {
             // Create a new MultiMediaDeviceEnumerator
-            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the List switch parameter was called
             if (list)
@@ -414,9 +414,9 @@ namespace AudioDeviceCmdlets
         protected override void ProcessRecord()
         {
             // Create a new MultiMediaDeviceEnumerator
-            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the InputObject parameter received a value
             if (inputObject != null)
@@ -577,9 +577,9 @@ namespace AudioDeviceCmdlets
         protected override void ProcessRecord()
         {
             // Create a new MultiMediaDeviceEnumerator
-            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the InputObject parameter received a value
             if (inputObject != null)
@@ -703,7 +703,7 @@ namespace AudioDeviceCmdlets
         protected override void ProcessRecord()
         {
             // Create a new MultiMediaDeviceEnumerator
-            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
 
             // If the PlaybackMeter parameter was called
             if (playbackmeter)

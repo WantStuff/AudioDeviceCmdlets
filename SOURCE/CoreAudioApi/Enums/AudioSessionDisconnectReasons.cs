@@ -24,6 +24,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
     public enum AudioSessionDisconnectReasons
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/
+
         DisconnectReasonDeviceRemoval = 0,
         DisconnectReasonServerShutdown = 1,
         DisconnectReasonFormatChanged = 2,

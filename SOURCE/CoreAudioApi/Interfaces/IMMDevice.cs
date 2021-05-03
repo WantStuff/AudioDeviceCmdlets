@@ -26,18 +26,19 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IMultiMediaDeviceEnumerator
+    [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    // ReSharper disable once InconsistentNaming
+    internal interface IMMDevice
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/
+
         [PreserveSig]
-        int EnumAudioEndpoints(DataFlows dataFlow, DeviceStates StateMask, out IMultiMediaDeviceCollection device);
+        int Activate(ref Guid iid, CLSCTX dwClsCtx, IntPtr pActivationParams,  [MarshalAs(UnmanagedType.IUnknown)] out object  ppInterface);
         [PreserveSig]
-        int GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role, out IMultiMediaDevice ppEndpoint);
+        int OpenPropertyStore(StgmAccesses stgmAccess, out IPropertyStore propertyStore);
         [PreserveSig]
-        int GetDevice(string pwstrId, out IMultiMediaDevice ppDevice);
+        int GetId([MarshalAs(UnmanagedType.LPWStr)] out string ppstrId);
         [PreserveSig]
-        int RegisterEndpointNotificationCallback(IntPtr pClient);
-        [PreserveSig]
-        int UnregisterEndpointNotificationCallback(IntPtr pClient);
+        int GetState(out DeviceStates pdwState);
     }
 }

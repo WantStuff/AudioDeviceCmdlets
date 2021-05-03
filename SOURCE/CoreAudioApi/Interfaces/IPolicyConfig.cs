@@ -17,7 +17,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
         int ResetDeviceFormat(string pszDeviceName);
 
         [PreserveSig]
-        int SetDeviceFormat(string pszDeviceName, IntPtr pEndpointFormat, IntPtr MixFormat);
+        int SetDeviceFormat(string pszDeviceName, IntPtr pEndpointFormat, IntPtr mixFormat);
 
         [PreserveSig]
         int GetProcessingPeriod(string pszDeviceName, bool bDefault, IntPtr pmftDefaultPeriod, IntPtr pmftMinimumPeriod);

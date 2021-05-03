@@ -28,6 +28,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("1BE09788-6894-4089-8586-9A2A6C265AC5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMultiMediaEndpoint
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/
+
         [PreserveSig]
         int GetDataFlow(out DataFlows pDataFlow);
     }; 

@@ -28,19 +28,21 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IAudioSessionManager2 
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/
+
         [PreserveSig]
-        int GetAudioSessionControl(ref Guid AudioSessionGuid, UInt32 StreamFlags,  IntPtr ISessionControl );
+        int GetAudioSessionControl(ref Guid audioSessionGuid, UInt32 streamFlags,  IntPtr sessionControl );
         [PreserveSig]
-        int GetSimpleAudioVolume(ref Guid AudioSessionGuid, UInt32 StreamFlags, IntPtr  /*ISimpleAudioVolume*/ SimpleAudioVolume);
+        int GetSimpleAudioVolume(ref Guid audioSessionGuid, UInt32 streamFlags, IntPtr  /*ISimpleAudioVolume*/ simpleAudioVolume);
         [PreserveSig]
-        int GetSessionEnumerator(out IAudioSessionEnumerator SessionEnum);
+        int GetSessionEnumerator(out IAudioSessionEnumerator sessionEnum);
         [PreserveSig]
-        int RegisterSessionNotification( IntPtr IAudioSessionNotification );
+        int RegisterSessionNotification( IntPtr audioSessionNotification );
         [PreserveSig]
-        int UnregisterSessionNotification( IntPtr IAudioSessionNotification );
+        int UnregisterSessionNotification( IntPtr audioSessionNotification );
         [PreserveSig]
-        int RegisterDuckNotification( string sessionID, IntPtr IAudioVolumeDuckNotification);
+        int RegisterDuckNotification( string sessionID, IntPtr audioVolumeDuckNotification);
         [PreserveSig]
-        int UnregisterDuckNotification(IntPtr IAudioVolumeDuckNotification);
+        int UnregisterDuckNotification(IntPtr audioVolumeDuckNotification);
     };
 }

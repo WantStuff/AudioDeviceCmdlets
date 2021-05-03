@@ -28,6 +28,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioMeterInformation 
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/
+
         [PreserveSig]
         int GetPeakValue(out float pfPeak);
         [PreserveSig]

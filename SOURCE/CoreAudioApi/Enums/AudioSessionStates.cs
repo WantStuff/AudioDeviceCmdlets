@@ -24,8 +24,10 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
     public enum AudioSessionStates
     {
-         AudioSessionStateInactive = 0,
-         AudioSessionStateActive = 1,
-         AudioSessionStateExpired = 2
+        // See https://docs.microsoft.com/en-us/windows/win32/api/audiosessiontypes/
+
+        AudioSessionStateInactive = 0,
+        AudioSessionStateActive = 1,
+        AudioSessionStateExpired = 2
     }
 }

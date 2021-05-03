@@ -28,9 +28,12 @@ using AudioDeviceCmdlets.CoreAudioApi.Structs;
 
 namespace AudioDeviceCmdlets.CoreAudioApi
 {
-    public class MultiMediaDevice
+    // ReSharper disable once InconsistentNaming
+    public class MMDevice
     {
-        private readonly IMultiMediaDevice _realDevice;
+        // See https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/
+
+        private readonly IMMDevice _realDevice;
         private PropertyStore _propertyStore;
         private AudioMeterInformation _audioMeterInformation;
         private AudioEndpointVolume _audioEndpointVolume;
@@ -40,7 +43,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         private static Guid _audioSessionManagerGuid = typeof(IAudioSessionManager2).GUID;
 
 
-        internal MultiMediaDevice(IMultiMediaDevice realDevice)
+        internal MMDevice(IMMDevice realDevice)
         {
             _realDevice = realDevice;
         }

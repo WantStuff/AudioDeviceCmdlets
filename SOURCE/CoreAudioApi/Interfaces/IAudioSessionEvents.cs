@@ -29,19 +29,27 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("24918ACC-64B3-37C1-8CA9-74A66E9957A8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAudioSessionEvents
     {
-        [PreserveSig] 
-        int OnDisplayNameChanged( [MarshalAs(UnmanagedType.LPWStr)] string NewDisplayName, Guid EventContext );
-        [PreserveSig] 
-        int OnIconPathChanged(  [MarshalAs(UnmanagedType.LPWStr)] string NewIconPath, Guid EventContext );
-        [PreserveSig] 
-        int OnSimpleVolumeChanged( float NewVolume,bool newMute, Guid EventContext );
-        [PreserveSig] 
-        int OnChannelVolumeChanged( UInt32 ChannelCount,  IntPtr NewChannelVolumeArray, UInt32 ChangedChannel, Guid EventContext );
-        [PreserveSig] 
-        int OnGroupingParamChanged( Guid NewGroupingParam, Guid EventContext );
-        [PreserveSig] 
-        int OnStateChanged( AudioSessionStates NewState);
-        [PreserveSig] 
-        int OnSessionDisconnected( AudioSessionDisconnectReasons DisconnectReason);
+        // See https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/
+
+        [PreserveSig]
+        int OnDisplayNameChanged([MarshalAs(UnmanagedType.LPWStr)] string newDisplayName, Guid eventContext);
+
+        [PreserveSig]
+        int OnIconPathChanged([MarshalAs(UnmanagedType.LPWStr)] string newIconPath, Guid eventContext);
+
+        [PreserveSig]
+        int OnSimpleVolumeChanged(float newVolume, bool newMute, Guid eventContext);
+
+        [PreserveSig]
+        int OnChannelVolumeChanged(UInt32 channelCount, IntPtr newChannelVolumeArray, UInt32 changedChannel, Guid eventContext);
+
+        [PreserveSig]
+        int OnGroupingParamChanged(Guid newGroupingParam, Guid eventContext);
+
+        [PreserveSig]
+        int OnStateChanged(AudioSessionStates newState);
+
+        [PreserveSig]
+        int OnSessionDisconnected(AudioSessionDisconnectReasons disconnectReason);
     }
 }

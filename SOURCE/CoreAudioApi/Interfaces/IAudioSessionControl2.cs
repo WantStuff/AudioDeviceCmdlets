@@ -29,25 +29,27 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
     [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IAudioSessionControl2
     {
+        // See https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/
+
         //IAudioSession functions
         [PreserveSig]
         int GetState(out AudioSessionStates state);
         [PreserveSig]
         int GetDisplayName(out IntPtr name);
         [PreserveSig]
-        int SetDisplayName(string value, Guid EventContext);
+        int SetDisplayName(string value, Guid eventContext);
         [PreserveSig]
         int GetIconPath(out IntPtr Path);
         [PreserveSig]
-        int SetIconPath(string Value, Guid EventContext);
+        int SetIconPath(string Value, Guid eventContext);
         [PreserveSig]
-        int GetGroupingParam(out Guid GroupingParam);
+        int GetGroupingParam(out Guid groupingParam);
         [PreserveSig]
-        int SetGroupingParam(Guid Override, Guid Eventcontext);
+        int SetGroupingParam(Guid @override, Guid eventcontext);
         [PreserveSig]
-        int RegisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
+        int RegisterAudioSessionNotification(IAudioSessionEvents newNotifications);
         [PreserveSig]
-        int UnregisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
+        int UnregisterAudioSessionNotification(IAudioSessionEvents newNotifications);
         //IAudioSession2 functions
         [PreserveSig]
         int GetSessionIdentifier( out IntPtr retVal);
@@ -59,7 +61,5 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
         int IsSystemSoundsSession();
         [PreserveSig]
         int SetDuckingPreference( bool optOut);
-
-
     }
 }

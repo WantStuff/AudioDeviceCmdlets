@@ -21,15 +21,40 @@
 */
 
 using System.Runtime.InteropServices;
+using AudioDeviceCmdlets.CoreAudioApi.Interfaces;
 
-namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
+namespace AudioDeviceCmdlets.CoreAudioApi
 {
-    [Guid("0BD7A1BE-7A1A-44DB-8397-CC5392387B5E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IMultiMediaDeviceCollection
+    // ReSharper disable once InconsistentNaming
+    public class MMDeviceCollection
     {
-        [PreserveSig]
-        int GetCount(out uint pcDevices);
-        [PreserveSig]
-        int Item(uint nDevice, out IMultiMediaDevice Device);
+        // See https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/
+
+        private readonly IMMDeviceCollection _mmDeviceCollection;
+
+        public int Count
+        {
+            get
+            {
+                uint result;
+                Marshal.ThrowExceptionForHR(_mmDeviceCollection.GetCount(out result));
+                return (int)result;
+            }
+        }
+
+        public MMDevice this[int index]
+        {
+            get
+            {
+                IMMDevice result;
+                _mmDeviceCollection.Item((uint)index, out result);
+                return new MMDevice(result);
+            }
+        }
+
+        internal MMDeviceCollection(IMMDeviceCollection parent)
+        {
+            _mmDeviceCollection = parent;
+        }
     }
 }
