@@ -70,14 +70,14 @@ namespace AudioDeviceCmdlets
             // If the ID parameter received a value
             if (!string.IsNullOrEmpty(ID))
             {
-                ProcessSwitchId();
+                ProcessSwitchId(ID);
                 return;
             }
 
             // If the Index parameter received a value
             if (Index.HasValue)
             {
-                ProcessIndexSwitch();
+                ProcessIndexSwitch(Index.Value);
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace AudioDeviceCmdlets
             }
         }
 
-        private void ProcessSwitchId()
+        private void ProcessSwitchId(string id)
         {
             // Create a new MultiMediaDeviceEnumerator
             var devEnum = new MMDeviceEnumerator();
@@ -166,7 +166,7 @@ namespace AudioDeviceCmdlets
             for (var i = 0; i < deviceCollection.Count; i++)
             {
                 // If this MMDevice's ID is the same as the string received by the ID parameter
-                if (string.Compare(deviceCollection[i].ID, ID, System.StringComparison.CurrentCultureIgnoreCase) == 0)
+                if (string.Compare(deviceCollection[i].ID, id, System.StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
                     // If this MMDevice's ID is either, the same the default playback device's ID, or the same as the default recording device's ID
                     var isMultimediaDefault =
@@ -185,7 +185,7 @@ namespace AudioDeviceCmdlets
             throw new System.ArgumentException("No AudioDevice with that ID");
         }
 
-        private void ProcessIndexSwitch()
+        private void ProcessIndexSwitch(int index)
         {
             // Create a new MultiMediaDeviceEnumerator
             var devEnum = new MMDeviceEnumerator();
@@ -198,15 +198,15 @@ namespace AudioDeviceCmdlets
             var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
 
             // If the Index is valid
-            if (Index.Value >= 1 && Index.Value <= deviceCollection.Count)
+            if (index >= 1 && index <= deviceCollection.Count)
             {
                 // If this MMDevice's ID is either, the same the default playback device's ID, or the same as the default recording device's ID
                 var isMultimediaDefault =
-                    deviceCollection[Index.Value - 1].ID == defaultMultimediaRecorder?.ID ||
-                    deviceCollection[Index.Value - 1].ID == defaultMultimediaPlayback?.ID;
+                    deviceCollection[index - 1].ID == defaultMultimediaRecorder?.ID ||
+                    deviceCollection[index - 1].ID == defaultMultimediaPlayback?.ID;
 
                 // Output the result of the creation of a new AudioDevice while assining it the an index, and the MMDevice itself
-                WriteObject(new AudioDevice(Index.Value, deviceCollection[Index.Value - 1], isMultimediaDefault));
+                WriteObject(new AudioDevice(index, deviceCollection[index - 1], isMultimediaDefault));
 
                 // Stop checking for other parameters
                 return;
@@ -251,7 +251,7 @@ namespace AudioDeviceCmdlets
             var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
 
             // Output the mute state of the default playback device
-            WriteObject(defaultMultimediaPlayback?.AudioEndpointVolume.Mute);
+            WriteObject(defaultMultimediaPlayback?.AudioEndpointVolume?.Mute);
         }
 
         private void ProcessSwitchPlaybackVolume()
@@ -263,7 +263,7 @@ namespace AudioDeviceCmdlets
             var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
 
             // Output the current volume level of the default playback device
-            WriteObject($"{defaultMultimediaPlayback?.AudioEndpointVolume.MasterVolumeLevelScalar * 100}%");
+            WriteObject($"{defaultMultimediaPlayback?.AudioEndpointVolume?.MasterVolumeLevelScalar * 100}%");
         }
 
         private void ProcessSwitchRecording()
@@ -297,14 +297,11 @@ namespace AudioDeviceCmdlets
             // Create a new MultiMediaDeviceEnumerator
             var devEnum = new MMDeviceEnumerator();
 
-            // Create a MMDeviceCollection of every devices that are enabled
-            var deviceCollection = devEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
-
             // Collect default devices
             var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
 
             // Output the mute state of the default recording device
-            WriteObject(defaultMultimediaRecorder?.AudioEndpointVolume.Mute);
+            WriteObject(defaultMultimediaRecorder?.AudioEndpointVolume?.Mute);
         }
 
         private void ProcessSwitchRecordingVolume()
@@ -312,14 +309,11 @@ namespace AudioDeviceCmdlets
             // Create a new MultiMediaDeviceEnumerator
             var devEnum = new MMDeviceEnumerator();
 
-            // Create a MMDeviceCollection of every devices that are enabled
-            var deviceCollection = devEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
-
             // Collect default devices
             var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
 
             // Output the current volume level of the default recording device
-            WriteObject($"{defaultMultimediaRecorder?.AudioEndpointVolume.MasterVolumeLevelScalar * 100}%");
+            WriteObject($"{defaultMultimediaRecorder?.AudioEndpointVolume?.MasterVolumeLevelScalar * 100}%");
         }
     }
 }
