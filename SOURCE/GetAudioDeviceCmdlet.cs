@@ -20,40 +20,40 @@ namespace AudioDeviceCmdlets
     public class GetAudioDeviceCmdlet : Cmdlet
     {
         // Parameter called to list all devices
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "List")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(List))]
         public SwitchParameter List { get; set; }
 
         // Parameter receiving the ID of the device to get
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "ID")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(ID))]
         public string ID { get; set; }
 
         // Parameter receiving the Index of the device to get
         [ValidateRange(1, 42)]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Index")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Index))]
         public int? Index { get; set; }
 
         // Parameter called to list the default playback device
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Playback")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Playback))]
         public SwitchParameter Playback { get; set; }
 
         // Parameter called to list the default playback device's mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "PlaybackMute")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(PlaybackMute))]
         public SwitchParameter PlaybackMute { get; set; }
 
         // Parameter called to list the default playback device's volume
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "PlaybackVolume")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(PlaybackVolume))]
         public SwitchParameter PlaybackVolume { get; set; }
 
         // Parameter called to list the default recording device
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Recording")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Recording))]
         public SwitchParameter Recording { get; set; }
 
         // Parameter called to list the default recording device' mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "RecordingMute")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(RecordingMute))]
         public SwitchParameter RecordingMute { get; set; }
 
         // Parameter called to list the default recording device' volume
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "RecordingVolume")]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(RecordingVolume))]
         public SwitchParameter RecordingVolume { get; set; }
 
 
@@ -75,7 +75,7 @@ namespace AudioDeviceCmdlets
             }
 
             // If the Index parameter received a value
-            if (Index != null)
+            if (Index.HasValue)
             {
                 ProcessIndexSwitch();
                 return;
