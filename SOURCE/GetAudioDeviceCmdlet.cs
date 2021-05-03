@@ -10,6 +10,8 @@
 // To interact with MMDevice
 
 // To act as a PowerShell Cmdlet
+
+using System;
 using System.Management.Automation;
 using AudioDeviceCmdlets.CoreAudioApi;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
@@ -166,7 +168,7 @@ namespace AudioDeviceCmdlets
             for (var i = 0; i < deviceCollection.Count; i++)
             {
                 // If this MMDevice's ID is the same as the string received by the ID parameter
-                if (string.Compare(deviceCollection[i].ID, id, System.StringComparison.CurrentCultureIgnoreCase) == 0)
+                if (string.Equals(deviceCollection[i].ID, id, StringComparison.CurrentCultureIgnoreCase))
                 {
                     // If this MMDevice's ID is either, the same the default playback device's ID, or the same as the default recording device's ID
                     var isMultimediaDefault =
