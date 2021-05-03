@@ -60,6 +60,7 @@ namespace AudioDeviceCmdlets
         public float? RecordingVolume { get; set; }
 
 
+        // Cmdlet execution
         protected override void ProcessRecord()
         {
             // If the InputObject parameter received a value
