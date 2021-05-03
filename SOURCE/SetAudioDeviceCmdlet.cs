@@ -10,225 +10,306 @@
 // To interact with MMDevice
 
 // To act as a PowerShell Cmdlet
+
 using System.Management.Automation;
 using AudioDeviceCmdlets.CoreAudioApi;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets
 {
-    [Cmdlet(VerbsCommon.Set, "AudioDevice")]
+    [Cmdlet(VerbsCommon.Set, nameof(AudioDevice))]
     public class SetAudioDeviceCmdlet : Cmdlet
     {
         // Parameter receiving the AudioDevice to set as default
-        [Parameter(Mandatory = true, ParameterSetName = "InputObject", ValueFromPipeline = true)]
-        public AudioDevice InputObject
-        {
-            get { return inputObject; }
-            set { inputObject = value; }
-
-        }
-        private AudioDevice inputObject;
+        [Parameter(Mandatory = true, ParameterSetName = nameof(InputObject), ValueFromPipeline = true)]
+        public AudioDevice InputObject { get; set; }
 
         // Parameter receiving the ID of the device to set as default
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "ID")]
-        public string ID
-        {
-            get { return id; }
-            set { id = value; }
-        }
-        private string id;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(ID))]
+        public string ID { get; set; }
 
         // Parameter receiving the Index of the device to set as default
         [ValidateRange(1, 42)]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "Index")]
-        public int? Index
-        {
-            get { return index; }
-            set { index = value; }
-        }
-        private int? index;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Index))]
+        public int? Index { get; set; }
 
         // Parameter called to set the default playback device's mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "PlaybackMute")]
-        public bool? PlaybackMute
-        {
-            get { return playbackmute; }
-            set { playbackmute = value; }
-        }
-        private bool? playbackmute;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(PlaybackMute))]
+        public bool? PlaybackMute { get; set; }
 
         // Parameter called to toggle the default playback device's mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "PlaybackMuteToggle")]
-        public SwitchParameter PlaybackMuteToggle
-        {
-            get { return playbackmutetoggle; }
-            set { playbackmutetoggle = value; }
-        }
-        private SwitchParameter playbackmutetoggle;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(PlaybackMuteToggle))]
+        public SwitchParameter PlaybackMuteToggle { get; set; }
 
         // Parameter receiving the volume level to set to the defaut playback device
         [ValidateRange(0, 100.0f)]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "PlaybackVolume")]
-        public float? PlaybackVolume
-        {
-            get { return playbackvolume; }
-            set { playbackvolume = value; }
-        }
-        private float? playbackvolume;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(PlaybackVolume))]
+        public float? PlaybackVolume { get; set; }
 
         // Parameter called to set the default recording device's mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "RecordingMute")]
-        public bool? RecordingMute
-        {
-            get { return recordingmute; }
-            set { recordingmute = value; }
-        }
-        private bool? recordingmute;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(RecordingMute))]
+        public bool? RecordingMute { get; set; }
 
         // Parameter called to toggle the default recording device's mute state
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "RecordingMuteToggle")]
-        public SwitchParameter RecordingMuteToggle
-        {
-            get { return recordingmutetoggle; }
-            set { recordingmutetoggle = value; }
-        }
-        private SwitchParameter recordingmutetoggle;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(RecordingMuteToggle))]
+        public SwitchParameter RecordingMuteToggle { get; set; }
 
         // Parameter receiving the volume level to set to the defaut recording device
         [ValidateRange(0, 100.0f)]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = "RecordingVolume")]
-        public float? RecordingVolume
-        {
-            get { return recordingvolume; }
-            set { recordingvolume = value; }
-        }
-        private float? recordingvolume;
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(RecordingVolume))]
+        public float? RecordingVolume { get; set; }
 
-        // Cmdlet execution
+
         protected override void ProcessRecord()
         {
-            // Create a new MultiMediaDeviceEnumerator
-            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
-            // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
-
             // If the InputObject parameter received a value
-            if (inputObject != null)
+            if (InputObject != null)
             {
-                // For every MMDevice in DeviceCollection
-                for (int i = 0; i < DeviceCollection.Count; i++)
-                {
-                    // If this MMDevice's ID is the same as the ID of the MMDevice received by the InputObject parameter
-                    if (DeviceCollection[i].ID == inputObject.ID)
-                    {
-                        // Create a new audio PolicyConfigClient
-                        PolicyConfigClient client = new PolicyConfigClient();
-                        // Using PolicyConfigClient, set the given device as the default playback device
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Multimedia);
-
-                        // Output the result of the creation of a new AudioDevice while assining it the an index, and the MMDevice itself, and a default value of true
-                        WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
-
-                        // Stop checking for other parameters
-                        return;
-                    }
-                }
-
-                // Throw an exception about the received device not being found
-                throw new System.ArgumentException("No such enabled AudioDevice found");
+                ProcessSwitchInputObject(InputObject);
             }
 
             // If the ID parameter received a value
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(ID))
             {
-                // For every MMDevice in DeviceCollection
-                for (int i = 0; i < DeviceCollection.Count; i++)
-                {
-                    // If this MMDevice's ID is the same as the string received by the ID parameter
-                    if (string.Compare(DeviceCollection[i].ID, id, System.StringComparison.CurrentCultureIgnoreCase) == 0)
-                    {
-                        // Create a new audio PolicyConfigClient
-                        PolicyConfigClient client = new PolicyConfigClient();
-                        // Using PolicyConfigClient, set the given device as the default device (for its type)
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Multimedia);
-
-                        // Output the result of the creation of a new AudioDevice while assining it the index, and the MMDevice itself, and a default value of true
-                        WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
-
-                        // Stop checking for other parameters
-                        return;
-                    }
-                }
-
-                // Throw an exception about the received ID not being found
-                throw new System.ArgumentException("No enabled AudioDevice found with that ID");
+                ProcessSwitchId(ID);
             }
 
             // If the Index parameter received a value
-            if (index != null)
+            if (Index.HasValue)
             {
-                // If the Index is valid
-                if (index.Value >= 1 && index.Value <= DeviceCollection.Count)
+                ProcessIndexSwitch(Index.Value);
+            }
+
+            // If the PlaybackMute parameter received a value
+            if (PlaybackMute.HasValue)
+            {
+                ProcessSwitchPlaybackMute(PlaybackMute.Value);
+            }
+
+            // If the PlaybackMuteToggle paramter was called
+            if (PlaybackMuteToggle)
+            {
+                ProcessSwitchPlaybackMuteToggle();
+            }
+
+            // If the PlaybackVolume parameter received a value
+            if (PlaybackVolume.HasValue)
+            {
+                ProcessSwitchPlaybackVolume(PlaybackVolume.Value);
+            }
+
+            // If the RecordingMute parameter received a value
+            if (RecordingMute.HasValue)
+            {
+                ProcessSwitchRecordingMute(RecordingMute.Value);
+            }
+
+            // If the RecordingMuteToggle paramter was called
+            if (RecordingMuteToggle)
+            {
+                ProcessSwitchRecordingMuteToggle();
+            }
+
+            // If the RecordingVolume parameter received a value
+            if (RecordingVolume.HasValue)
+            {
+                ProcessSwitchRecordingVolume(RecordingVolume.Value);
+            }
+        }
+
+
+        private void ProcessSwitchInputObject(AudioDevice inputObject)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Create a MMDeviceCollection of every devices that are enabled
+            var deviceCollection = devEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+
+            // For every MMDevice in DeviceCollection
+            for (int i = 0; i < deviceCollection.Count; i++)
+            {
+                // If this MMDevice's ID is the same as the ID of the MMDevice received by the InputObject parameter
+                if (deviceCollection[i].ID == inputObject.ID)
                 {
                     // Create a new audio PolicyConfigClient
-                    PolicyConfigClient client = new PolicyConfigClient();
-                    // Using PolicyConfigClient, set the given device as the default device (for its type)
-                    client.SetDefaultEndpoint(DeviceCollection[index.Value - 1].ID, DeviceRoles.Multimedia);
+                    var client = new PolicyConfigClient();
 
-                    // Output the result of the creation of a new AudioDevice while assining it the index, and the MMDevice itself, and a default value of true
-                    WriteObject(new AudioDevice(index.Value, DeviceCollection[index.Value - 1], true));
+                    // Using PolicyConfigClient, set the given device as the default playback device
+                    client.SetDefaultEndpoint(deviceCollection[i].ID, DeviceRoles.Multimedia);
+
+                    // Output the result of the creation of a new AudioDevice while assigning it the an index, and the MMDevice itself, and a default value of true
+                    WriteObject(new AudioDevice(i + 1, deviceCollection[i], true));
 
                     // Stop checking for other parameters
                     return;
                 }
-                else
+            }
+
+            // Throw an exception about the received device not being found
+            throw new System.ArgumentException("No such enabled AudioDevice found");
+        }
+
+        private void ProcessSwitchId(string id)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Create a MMDeviceCollection of every devices that are enabled
+            var deviceCollection = devEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+
+            // For every MMDevice in DeviceCollection
+            for (var i = 0; i < deviceCollection.Count; i++)
+            {
+                // If this MMDevice's ID is the same as the string received by the ID parameter
+                if (string.Equals(deviceCollection[i].ID, id, System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    // Throw an exception about the received Index not being found
-                    throw new System.ArgumentException("No enabled AudioDevice found with that Index");
+                    // Create a new audio PolicyConfigClient
+                    var client = new PolicyConfigClient();
+
+                    // Using PolicyConfigClient, set the given device as the default device (for its type)
+                    client.SetDefaultEndpoint(deviceCollection[i].ID, DeviceRoles.Multimedia);
+
+                    // Output the result of the creation of a new AudioDevice while assigning it the index, and the MMDevice itself, and a default value of true
+                    WriteObject(new AudioDevice(i + 1, deviceCollection[i], true));
+
+                    // Stop checking for other parameters
+                    return;
                 }
             }
 
-            // If the PlaybackMute parameter received a value
-            if (playbackmute != null)
+            // Throw an exception about the received ID not being found
+            throw new System.ArgumentException("No enabled AudioDevice found with that ID");
+        }
+
+        private void ProcessIndexSwitch(int index)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Create a MMDeviceCollection of every devices that are enabled
+            var deviceCollection = devEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+
+            // If the Index is valid
+            if (index >= 1 && index <= deviceCollection.Count)
             {
-                // Set the mute state of the default playback device to that of the boolean value received by the Cmdlet
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = (bool)playbackmute;
+                // Create a new audio PolicyConfigClient
+                var client = new PolicyConfigClient();
+
+                // Using PolicyConfigClient, set the given device as the default device (for its type)
+                client.SetDefaultEndpoint(deviceCollection[index - 1].ID, DeviceRoles.Multimedia);
+
+                // Output the result of the creation of a new AudioDevice while assigning it the index, and the MMDevice itself, and a default value of true
+                WriteObject(new AudioDevice(index, deviceCollection[index - 1], true));
+
+                // Stop checking for other parameters
+                return;
             }
 
-            // If the PlaybackMuteToggle paramter was called
-            if (playbackmutetoggle)
+            // Throw an exception about the received Index not being found
+            throw new System.ArgumentException("No enabled AudioDevice found with that Index");
+        }
+
+        private static void ProcessSwitchPlaybackMute(bool recordingMute)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaPlayback == null)
             {
-                // Toggle the mute state of the default playback device
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute;
+                throw new System.ArgumentException("No default playback device found");
             }
 
-            // If the PlaybackVolume parameter received a value
-            if (playbackvolume != null)
+            // Set the mute state of the default recording device to that of the boolean value received by the Cmdlet
+            defaultMultimediaPlayback.AudioEndpointVolume.Mute = recordingMute;
+        }
+
+        private static void ProcessSwitchPlaybackMuteToggle()
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaPlayback == null)
             {
-                // Set the volume level of the default playback device to that of the float value received by the PlaybackVolume parameter
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)playbackvolume / 100.0f;
+                throw new System.ArgumentException("No default playback device found");
             }
 
-            // If the RecordingMute parameter received a value
-            if (recordingmute != null)
+            // Toggle the mute state of the default recording device
+            defaultMultimediaPlayback.AudioEndpointVolume.Mute = !defaultMultimediaPlayback.AudioEndpointVolume.Mute;
+        }
+
+        private static void ProcessSwitchPlaybackVolume(float playbackVolume)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaPlayback == null)
             {
-                // Set the mute state of the default recording device to that of the boolean value received by the Cmdlet
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = (bool)recordingmute;
+                throw new System.ArgumentException("No default playback device found");
             }
 
-            // If the RecordingMuteToggle paramter was called
-            if (recordingmutetoggle)
+            // Set the volume level of the default playback device to that of the float value received by the PlaybackVolume parameter
+            defaultMultimediaPlayback.AudioEndpointVolume.MasterVolumeLevelScalar = playbackVolume / 100.0f;
+        }
+        
+        private static void ProcessSwitchRecordingMute(bool recordingMute)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaRecorder == null)
             {
-                // Toggle the mute state of the default recording device
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute;
+                throw new System.ArgumentException("No default recording device found");
             }
 
-            // If the RecordingVolume parameter received a value
-            if (recordingvolume != null)
+            // Set the mute state of the default recording device to that of the boolean value received by the Cmdlet
+            defaultMultimediaRecorder.AudioEndpointVolume.Mute = recordingMute;
+        }
+
+        private static void ProcessSwitchRecordingMuteToggle()
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaRecorder == null)
             {
-                // Set the volume level of the default recording device to that of the float value received by the RecordingVolume parameter
-                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)recordingvolume / 100.0f;
+                throw new System.ArgumentException("No default recording device found");
             }
+
+            // Toggle the mute state of the default recording device
+            defaultMultimediaRecorder.AudioEndpointVolume.Mute = !defaultMultimediaRecorder.AudioEndpointVolume.Mute;
+        }
+
+        private static void ProcessSwitchRecordingVolume(float recordingVolume)
+        {
+            // Create a new MultiMediaDeviceEnumerator
+            var devEnum = new MMDeviceEnumerator();
+
+            // Collect default devices
+            var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
+
+            if (defaultMultimediaRecorder == null)
+            {
+                throw new System.ArgumentException("No default recording device found");
+            }
+
+            // Set the volume level of the default recording device to that of the float value received by the RecordingVolume parameter
+            defaultMultimediaRecorder.AudioEndpointVolume.MasterVolumeLevelScalar = recordingVolume / 100.0f;
         }
     }
 }
