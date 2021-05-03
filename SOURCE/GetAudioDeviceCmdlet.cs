@@ -251,9 +251,13 @@ namespace AudioDeviceCmdlets
 
             // Collect default devices
             var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
+            if (defaultMultimediaPlayback == null)
+            {
+                throw new ArgumentException("No default playback device found");
+            }
 
             // Output the mute state of the default playback device
-            WriteObject(defaultMultimediaPlayback?.AudioEndpointVolume?.Mute);
+            WriteObject(defaultMultimediaPlayback.AudioEndpointVolume.Mute);
         }
 
         private void ProcessSwitchPlaybackVolume()
@@ -263,9 +267,13 @@ namespace AudioDeviceCmdlets
 
             // Collect default devices
             var defaultMultimediaPlayback = devEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia);
+            if (defaultMultimediaPlayback == null)
+            {
+                throw new ArgumentException("No default playback device found");
+            }
 
             // Output the current volume level of the default playback device
-            WriteObject($"{defaultMultimediaPlayback?.AudioEndpointVolume?.MasterVolumeLevelScalar * 100}%");
+            WriteObject($"{defaultMultimediaPlayback.AudioEndpointVolume.MasterVolumeLevelScalar * 100}%");
         }
 
         private void ProcessSwitchRecording()
@@ -301,6 +309,10 @@ namespace AudioDeviceCmdlets
 
             // Collect default devices
             var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
+            if (defaultMultimediaRecorder == null)
+            {
+                throw new System.ArgumentException("No default recording device found");
+            }
 
             // Output the mute state of the default recording device
             WriteObject(defaultMultimediaRecorder?.AudioEndpointVolume?.Mute);
@@ -313,6 +325,10 @@ namespace AudioDeviceCmdlets
 
             // Collect default devices
             var defaultMultimediaRecorder = devEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia);
+            if (defaultMultimediaRecorder == null)
+            {
+                throw new System.ArgumentException("No default recording device found");
+            }
 
             // Output the current volume level of the default recording device
             WriteObject($"{defaultMultimediaRecorder?.AudioEndpointVolume?.MasterVolumeLevelScalar * 100}%");
