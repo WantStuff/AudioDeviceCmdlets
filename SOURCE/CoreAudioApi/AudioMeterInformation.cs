@@ -29,7 +29,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
     public class AudioMeterInformation
     {
         private IAudioMeterInformation _AudioMeterInformation;
-        private EEndpointHardwareSupport _HardwareSupport;
+        private EndpointHardwareSupports _HardwareSupport;
         private AudioMeterInformationChannels _Channels;
 
         internal AudioMeterInformation(IAudioMeterInformation realInterface)
@@ -38,7 +38,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
 
             _AudioMeterInformation = realInterface;
             Marshal.ThrowExceptionForHR(_AudioMeterInformation.QueryHardwareSupport(out HardwareSupp));
-            _HardwareSupport = (EEndpointHardwareSupport)HardwareSupp;
+            _HardwareSupport = (EndpointHardwareSupports)HardwareSupp;
             _Channels = new AudioMeterInformationChannels(_AudioMeterInformation);
 
         }
@@ -51,7 +51,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             }
         }
 
-        public EEndpointHardwareSupport HardwareSupport
+        public EndpointHardwareSupports HardwareSupport
         {
             get
             {

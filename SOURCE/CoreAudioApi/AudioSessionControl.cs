@@ -72,11 +72,11 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             Marshal.ThrowExceptionForHR(_AudioSessionControl.UnregisterAudioSessionNotification(eventConsumer));
         }
 
-        public AudioSessionState State
+        public AudioSessionStates State
         {
             get
             {
-                AudioSessionState res;
+                AudioSessionStates res;
                 Marshal.ThrowExceptionForHR(_AudioSessionControl.GetState(out res));
                 return res;
             }

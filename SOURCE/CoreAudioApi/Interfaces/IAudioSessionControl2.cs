@@ -26,13 +26,12 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"),
-     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IAudioSessionControl2
     {
         //IAudioSession functions
         [PreserveSig]
-        int GetState(out AudioSessionState state);
+        int GetState(out AudioSessionStates state);
         [PreserveSig]
         int GetDisplayName(out IntPtr name);
         [PreserveSig]

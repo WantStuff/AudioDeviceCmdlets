@@ -49,7 +49,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         private void GetPropertyInformation()
         {
             IPropertyStore propstore;
-            Marshal.ThrowExceptionForHR(_RealDevice.OpenPropertyStore(EStgmAccess.STGM_READ, out propstore));
+            Marshal.ThrowExceptionForHR(_RealDevice.OpenPropertyStore(StgmAccesses.STGM_READ, out propstore));
             _PropertyStore = new PropertyStore(propstore);
         }
 
@@ -147,22 +147,22 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             }
         }
 
-        public EDataFlow DataFlow
+        public DataFlows DataFlow
         {
             get
             {
-                EDataFlow Result;
+                DataFlows Result;
                 IMMEndpoint ep =  _RealDevice as IMMEndpoint ;
                 ep.GetDataFlow(out Result);
                 return Result;
             }
         }
 
-        public EDeviceState State
+        public DeviceStates State
         {
             get
             {
-                EDeviceState Result;
+                DeviceStates Result;
                 Marshal.ThrowExceptionForHR(_RealDevice.GetState(out Result));
                 return Result;
 

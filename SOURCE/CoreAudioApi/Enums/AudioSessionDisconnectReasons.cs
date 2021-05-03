@@ -1,4 +1,4 @@
-/*
+﻿/*
   LICENSE
   -------
   Copyright (C) 2007-2010 Ray Molenkamp
@@ -20,16 +20,15 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-using System;
-
 namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
-    [Flags]
-    public enum EDeviceState : uint
+    public enum AudioSessionDisconnectReasons
     {
-        DEVICE_STATE_ACTIVE      = 0x00000001,
-        DEVICE_STATE_UNPLUGGED   = 0x00000002,
-        DEVICE_STATE_NOTPRESENT  = 0x00000004,
-        DEVICE_STATEMASK_ALL     = 0x00000007
+        DisconnectReasonDeviceRemoval = 0,
+        DisconnectReasonServerShutdown = 1,
+        DisconnectReasonFormatChanged = 2,
+        DisconnectReasonSessionLogoff = 3,
+        DisconnectReasonSessionDisconnected = 4,
+        DisconnectReasonExclusiveModeOverride = 5 
     }
 }

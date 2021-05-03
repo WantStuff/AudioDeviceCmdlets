@@ -26,14 +26,13 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMDeviceEnumerator
     {
         [PreserveSig]
-        int EnumAudioEndpoints(EDataFlow dataFlow, EDeviceState StateMask, out IMMDeviceCollection device);
+        int EnumAudioEndpoints(DataFlows dataFlow, DeviceStates StateMask, out IMMDeviceCollection device);
         [PreserveSig]
-        int GetDefaultAudioEndpoint(EDataFlow dataFlow, ERole role, out IMMDevice ppEndpoint);
+        int GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role, out IMMDevice ppEndpoint);
         [PreserveSig]
         int GetDevice(string pwstrId, out IMMDevice ppDevice);
         [PreserveSig]

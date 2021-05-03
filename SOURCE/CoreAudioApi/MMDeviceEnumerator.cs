@@ -38,14 +38,14 @@ namespace AudioDeviceCmdlets.CoreAudioApi
     {
         private IMMDeviceEnumerator _realEnumerator = new _MMDeviceEnumerator() as IMMDeviceEnumerator;
 
-        public MMDeviceCollection EnumerateAudioEndPoints(EDataFlow dataFlow, EDeviceState dwStateMask)
+        public MMDeviceCollection EnumerateAudioEndPoints(DataFlows dataFlow, DeviceStates dwStateMask)
         {
             IMMDeviceCollection result;
             Marshal.ThrowExceptionForHR(_realEnumerator.EnumAudioEndpoints(dataFlow,dwStateMask,out result));
             return new MMDeviceCollection(result);
         }
 
-        public MMDevice GetDefaultAudioEndpoint(EDataFlow dataFlow, ERole role)
+        public MMDevice GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role)
         {
             IMMDevice _Device = null;
             Marshal.ThrowExceptionForHR(((IMMDeviceEnumerator)_realEnumerator).GetDefaultAudioEndpoint(dataFlow, role, out _Device));

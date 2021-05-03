@@ -22,11 +22,10 @@
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
-    public enum ERole
+    public enum DeviceRoles
     {
-        eConsole =0,
-        eMultimedia =1,
-        eCommunications=2,
-        ERole_enum_count=3
+        Console = 0,
+        Multimedia = 1,
+        Communication = 2,
     }
 }

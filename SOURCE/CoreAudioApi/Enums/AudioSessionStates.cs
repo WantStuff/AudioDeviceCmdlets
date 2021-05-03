@@ -1,4 +1,4 @@
-/*
+﻿/*
   LICENSE
   -------
   Copyright (C) 2007-2010 Ray Molenkamp
@@ -22,11 +22,10 @@
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
-    public enum EDataFlow
+    public enum AudioSessionStates
     {
-        eRender = 0,
-        eCapture = 1,
-        eAll = 2 ,
-        EDataFlow_enum_count =3
+         AudioSessionStateInactive = 0,
+         AudioSessionStateActive = 1,
+         AudioSessionStateExpired = 2
     }
 }

@@ -4,8 +4,7 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("568B9108-44BF-40B4-9006-86AFE5B5A620"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("568B9108-44BF-40B4-9006-86AFE5B5A620"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IPolicyConfigVista
     {
         [PreserveSig]
@@ -39,7 +38,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
         int SetPropertyValue(string pszDeviceName, bool bFxStore, IntPtr key, IntPtr pv);
 
         [PreserveSig]
-        int SetDefaultEndpoint(string pszDeviceName, ERole role);
+        int SetDefaultEndpoint(string pszDeviceName, DeviceRoles role);
 
         [PreserveSig]
         int SetEndpointVisibility(string pszDeviceName, bool bVisible);

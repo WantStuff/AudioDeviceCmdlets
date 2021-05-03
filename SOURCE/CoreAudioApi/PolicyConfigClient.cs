@@ -28,7 +28,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             _PolicyConfig10 = new _PolicyConfigClient() as IPolicyConfig10;
         }
 
-        public void SetDefaultEndpoint(string devID, ERole eRole)
+        public void SetDefaultEndpoint(string devID, DeviceRoles eRole)
         {
             if (_PolicyConfig != null)
             {

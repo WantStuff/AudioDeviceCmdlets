@@ -35,7 +35,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         private AudioEndpointVolumeChannels _Channels;
         private AudioEndpointVolumeStepInformation _StepInformation;
         private AudioEndPointVolumeVolumeRange _VolumeRange;
-        private EEndpointHardwareSupport _HardwareSupport;
+        private EndpointHardwareSupports _HardwareSupport;
         private AudioEndpointVolumeCallback _CallBack;
         public  event AudioEndpointVolumeNotificationDelegate OnVolumeNotification;
 
@@ -46,7 +46,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
                 return _VolumeRange;
             }
         }
-        public EEndpointHardwareSupport HardwareSupport
+        public EndpointHardwareSupports HardwareSupport
         {
             get
             {
@@ -122,7 +122,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             _Channels = new AudioEndpointVolumeChannels(_AudioEndPointVolume);
             _StepInformation = new AudioEndpointVolumeStepInformation(_AudioEndPointVolume);
             Marshal.ThrowExceptionForHR(_AudioEndPointVolume.QueryHardwareSupport(out HardwareSupp));
-            _HardwareSupport = (EEndpointHardwareSupport)HardwareSupp;
+            _HardwareSupport = (EndpointHardwareSupports)HardwareSupp;
             _VolumeRange = new AudioEndPointVolumeVolumeRange(_AudioEndPointVolume);
             _CallBack = new AudioEndpointVolumeCallback(this);
             Marshal.ThrowExceptionForHR(_AudioEndPointVolume.RegisterControlChangeNotify( _CallBack));

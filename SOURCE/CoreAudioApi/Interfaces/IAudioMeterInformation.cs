@@ -25,8 +25,7 @@ using System.Runtime.InteropServices;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"),
-     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioMeterInformation 
     {
         [PreserveSig]

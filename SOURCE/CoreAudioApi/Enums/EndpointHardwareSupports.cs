@@ -1,4 +1,4 @@
-﻿/*
+/*
   LICENSE
   -------
   Copyright (C) 2007-2010 Ray Molenkamp
@@ -20,15 +20,15 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+using System;
+
 namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
-    public enum AudioSessionDisconnectReason
+    [Flags]
+    public enum EndpointHardwareSupports
     {
-        DisconnectReasonDeviceRemoval = 0,
-        DisconnectReasonServerShutdown = (DisconnectReasonDeviceRemoval + 1),
-        DisconnectReasonFormatChanged = (DisconnectReasonServerShutdown + 1),
-        DisconnectReasonSessionLogoff = (DisconnectReasonFormatChanged + 1),
-        DisconnectReasonSessionDisconnected = (DisconnectReasonSessionLogoff + 1),
-        DisconnectReasonExclusiveModeOverride = (DisconnectReasonSessionDisconnected + 1) 
+        Volume = 0x00000001,
+        Mute   = 0x00000002,
+        Meter  = 0x00000004
     }
 }

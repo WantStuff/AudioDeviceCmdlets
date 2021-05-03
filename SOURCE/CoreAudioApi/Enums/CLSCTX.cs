@@ -21,10 +21,12 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Enums
 {
     [Flags]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal enum CLSCTX : uint
     {
         INPROC_SERVER = 0x1,

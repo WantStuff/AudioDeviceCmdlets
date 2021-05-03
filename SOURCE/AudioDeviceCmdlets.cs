@@ -8,9 +8,11 @@
 */
 
 // To interact with MMDevice
-using CoreAudioApi;
+
 // To act as a PowerShell Cmdlet
 using System.Management.Automation;
+using AudioDeviceCmdlets.CoreAudioApi;
+using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets
 {
@@ -40,13 +42,13 @@ namespace AudioDeviceCmdlets
             this.Default = Default;
 
             // If the received MMDevice is a playback device
-            if (BaseDevice.DataFlow == EDataFlow.eRender)
+            if (BaseDevice.DataFlow == DataFlows.Render)
             {
                 // Set this object's Type to "Playback"
                 this.Type = "Playback";
             }
             // If not, if the received MMDevice is a recording device
-            else if (BaseDevice.DataFlow == EDataFlow.eCapture)
+            else if (BaseDevice.DataFlow == DataFlows.Capture)
             {
                 // Set this object's Type to "Recording"
                 this.Type = "Recording";
@@ -155,7 +157,7 @@ namespace AudioDeviceCmdlets
             // Create a new MMDeviceEnumerator
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(EDataFlow.eAll, EDeviceState.DEVICE_STATE_ACTIVE);
+            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the List switch parameter was called
             if (list)
@@ -164,7 +166,7 @@ namespace AudioDeviceCmdlets
                 for (int i = 0; i < DeviceCollection.Count; i++)
                 {
                     // If this MMDevice's ID is either, the same the default playback device's ID, or the same as the default recording device's ID
-                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).ID || DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).ID)
+                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).ID || DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).ID)
                     {
                         // Output the result of the creation of a new AudioDevice while assining it an index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
@@ -175,7 +177,7 @@ namespace AudioDeviceCmdlets
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i]));
                     }
                 }
-                
+
                 // Stop checking for other parameters
                 return;
             }
@@ -190,7 +192,7 @@ namespace AudioDeviceCmdlets
                     if (string.Compare(DeviceCollection[i].ID, id, System.StringComparison.CurrentCultureIgnoreCase) == 0)
                     {
                         // If this MMDevice's ID is either, the same the default playback device's ID, or the same as the default recording device's ID
-                        if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).ID || DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).ID)
+                        if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).ID || DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).ID)
                         {
                             // Output the result of the creation of a new AudioDevice while assining it an index, and the MMDevice itself, and a default value of true
                             WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
@@ -217,7 +219,7 @@ namespace AudioDeviceCmdlets
                 if (index.Value >= 1 && index.Value <= DeviceCollection.Count)
                 {
                     // If the ID of the MMDevice associated with the Index is the same as, either the ID of the default playback device, or the ID of the default recording device
-                    if (DeviceCollection[index.Value - 1].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).ID || DeviceCollection[index.Value - 1].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).ID)
+                    if (DeviceCollection[index.Value - 1].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).ID || DeviceCollection[index.Value - 1].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).ID)
                     {
                         // Output the result of the creation of a new AudioDevice while assining it the an index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(index.Value, DeviceCollection[index.Value - 1], true));
@@ -248,13 +250,13 @@ namespace AudioDeviceCmdlets
                 for (int i = 0; i < DeviceCollection.Count; i++)
                 {
                     // If this MMDevice's ID is the same the default playback device's ID
-                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).ID)
+                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).ID)
                     {
                         // Output the result of the creation of a new AudioDevice while assining it an index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
                     }
                 }
-                
+
                 // Stop checking for other parameters
                 return;
             }
@@ -263,17 +265,17 @@ namespace AudioDeviceCmdlets
             if (playbackmute)
             {
                 // Output the mute state of the default playback device
-                WriteObject(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.Mute);
+                WriteObject(DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute);
 
                 // Stop checking for other parameters
                 return;
             }
 
             // If the PlaybackVolume switch parameter was called
-            if(playbackvolume)
+            if (playbackvolume)
             {
                 // Output the current volume level of the default playback device
-                WriteObject(string.Format("{0}%", DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.MasterVolumeLevelScalar * 100));
+                WriteObject(string.Format("{0}%", DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar * 100));
 
                 // Stop checking for other parameters
                 return;
@@ -286,13 +288,13 @@ namespace AudioDeviceCmdlets
                 for (int i = 0; i < DeviceCollection.Count; i++)
                 {
                     // If this MMDevice's ID is the same the default recording device's ID
-                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).ID)
+                    if (DeviceCollection[i].ID == DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).ID)
                     {
                         // Output the result of the creation of a new AudioDevice while assining it an index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
                     }
                 }
-                
+
                 // Stop checking for other parameters
                 return;
             }
@@ -301,7 +303,7 @@ namespace AudioDeviceCmdlets
             if (recordingmute)
             {
                 // Output the mute state of the default recording device
-                WriteObject(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.Mute);
+                WriteObject(DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute);
 
                 // Stop checking for other parameters
                 return;
@@ -311,7 +313,7 @@ namespace AudioDeviceCmdlets
             if (recordingvolume)
             {
                 // Output the current volume level of the default recording device
-                WriteObject(string.Format("{0}%", DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.MasterVolumeLevelScalar * 100));
+                WriteObject(string.Format("{0}%", DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar * 100));
 
                 // Stop checking for other parameters
                 return;
@@ -414,7 +416,7 @@ namespace AudioDeviceCmdlets
             // Create a new MMDeviceEnumerator
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(EDataFlow.eAll, EDeviceState.DEVICE_STATE_ACTIVE);
+            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the InputObject parameter received a value
             if (inputObject != null)
@@ -428,9 +430,9 @@ namespace AudioDeviceCmdlets
                         // Create a new audio PolicyConfigClient
                         PolicyConfigClient client = new PolicyConfigClient();
                         // Using PolicyConfigClient, set the given device as the default playback communication device
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, ERole.eCommunications);
+                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Communication);
                         // Using PolicyConfigClient, set the given device as the default playback device
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, ERole.eMultimedia);
+                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Multimedia);
 
                         // Output the result of the creation of a new AudioDevice while assining it the an index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
@@ -456,9 +458,9 @@ namespace AudioDeviceCmdlets
                         // Create a new audio PolicyConfigClient
                         PolicyConfigClient client = new PolicyConfigClient();
                         // Using PolicyConfigClient, set the given device as the default communication device (for its type)
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, ERole.eCommunications);
+                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Communication);
                         // Using PolicyConfigClient, set the given device as the default device (for its type)
-                        client.SetDefaultEndpoint(DeviceCollection[i].ID, ERole.eMultimedia);
+                        client.SetDefaultEndpoint(DeviceCollection[i].ID, DeviceRoles.Multimedia);
 
                         // Output the result of the creation of a new AudioDevice while assining it the index, and the MMDevice itself, and a default value of true
                         WriteObject(new AudioDevice(i + 1, DeviceCollection[i], true));
@@ -481,9 +483,9 @@ namespace AudioDeviceCmdlets
                     // Create a new audio PolicyConfigClient
                     PolicyConfigClient client = new PolicyConfigClient();
                     // Using PolicyConfigClient, set the given device as the default communication device (for its type)
-                    client.SetDefaultEndpoint(DeviceCollection[index.Value - 1].ID, ERole.eCommunications);
+                    client.SetDefaultEndpoint(DeviceCollection[index.Value - 1].ID, DeviceRoles.Communication);
                     // Using PolicyConfigClient, set the given device as the default device (for its type)
-                    client.SetDefaultEndpoint(DeviceCollection[index.Value - 1].ID, ERole.eMultimedia);
+                    client.SetDefaultEndpoint(DeviceCollection[index.Value - 1].ID, DeviceRoles.Multimedia);
 
                     // Output the result of the creation of a new AudioDevice while assining it the index, and the MMDevice itself, and a default value of true
                     WriteObject(new AudioDevice(index.Value, DeviceCollection[index.Value - 1], true));
@@ -502,42 +504,42 @@ namespace AudioDeviceCmdlets
             if (playbackmute != null)
             {
                 // Set the mute state of the default playback device to that of the boolean value received by the Cmdlet
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.Mute = (bool)playbackmute;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = (bool)playbackmute;
             }
 
             // If the PlaybackMuteToggle paramter was called
             if (playbackmutetoggle)
             {
                 // Toggle the mute state of the default playback device
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.Mute;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.Mute;
             }
 
             // If the PlaybackVolume parameter received a value
-            if(playbackvolume != null)
+            if (playbackvolume != null)
             {
                 // Set the volume level of the default playback device to that of the float value received by the PlaybackVolume parameter
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)playbackvolume / 100.0f;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)playbackvolume / 100.0f;
             }
 
             // If the RecordingMute parameter received a value
             if (recordingmute != null)
             {
                 // Set the mute state of the default recording device to that of the boolean value received by the Cmdlet
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.Mute = (bool)recordingmute;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = (bool)recordingmute;
             }
 
             // If the RecordingMuteToggle paramter was called
             if (recordingmutetoggle)
             {
                 // Toggle the mute state of the default recording device
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.Mute;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute = !DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.Mute;
             }
 
             // If the RecordingVolume parameter received a value
             if (recordingvolume != null)
             {
                 // Set the volume level of the default recording device to that of the float value received by the RecordingVolume parameter
-                DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)recordingvolume / 100.0f;
+                DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioEndpointVolume.MasterVolumeLevelScalar = (float)recordingvolume / 100.0f;
             }
         }
     }
@@ -592,7 +594,7 @@ namespace AudioDeviceCmdlets
             if (playbackmeter)
             {
                 // Create a new progress bar to output current audiometer result of the default playback device
-                ProgressRecord pr = new ProgressRecord(0, DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).FriendlyName, "Peak Value");
+                ProgressRecord pr = new ProgressRecord(0, DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).FriendlyName, "Peak Value");
                 // Set the progress bar to zero
                 pr.PercentComplete = 0;
 
@@ -600,7 +602,7 @@ namespace AudioDeviceCmdlets
                 do
                 {
                     // Set progress bar to current audiometer result
-                    pr.PercentComplete = System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioMeterInformation.MasterPeakValue * 100);
+                    pr.PercentComplete = System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioMeterInformation.MasterPeakValue * 100);
 
                     // Write current audiometer result as a progress bar
                     WriteProgress(pr);
@@ -619,7 +621,7 @@ namespace AudioDeviceCmdlets
                 do
                 {
                     // Write current audiometer result as a value
-                    WriteObject(System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia).AudioMeterInformation.MasterPeakValue * 100));
+                    WriteObject(System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(DataFlows.Render, DeviceRoles.Multimedia).AudioMeterInformation.MasterPeakValue * 100));
 
                     // Wait 100 milliseconds
                     System.Threading.Thread.Sleep(100);
@@ -632,7 +634,7 @@ namespace AudioDeviceCmdlets
             if (recordingmeter)
             {
                 // Create a new progress bar to output current audiometer result of the default recording device
-                ProgressRecord pr = new ProgressRecord(0, DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).FriendlyName, "Peak Value");
+                ProgressRecord pr = new ProgressRecord(0, DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).FriendlyName, "Peak Value");
                 // Set the progress bar to zero
                 pr.PercentComplete = 0;
 
@@ -640,7 +642,7 @@ namespace AudioDeviceCmdlets
                 do
                 {
                     // Set progress bar to current audiometer result
-                    pr.PercentComplete = System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioMeterInformation.MasterPeakValue * 100);
+                    pr.PercentComplete = System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioMeterInformation.MasterPeakValue * 100);
 
                     // Write current audiometer result as a progress bar
                     WriteProgress(pr);
@@ -659,7 +661,7 @@ namespace AudioDeviceCmdlets
                 do
                 {
                     // Write current audiometer result as a value
-                    WriteObject(System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia).AudioMeterInformation.MasterPeakValue * 100));
+                    WriteObject(System.Convert.ToInt32(DevEnum.GetDefaultAudioEndpoint(DataFlows.Capture, DeviceRoles.Multimedia).AudioMeterInformation.MasterPeakValue * 100));
 
                     // Wait 100 milliseconds
                     System.Threading.Thread.Sleep(100);

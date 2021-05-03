@@ -26,8 +26,7 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("24918ACC-64B3-37C1-8CA9-74A66E9957A8"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("24918ACC-64B3-37C1-8CA9-74A66E9957A8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAudioSessionEvents
     {
         [PreserveSig] 
@@ -41,8 +40,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
         [PreserveSig] 
         int OnGroupingParamChanged( Guid NewGroupingParam, Guid EventContext );
         [PreserveSig] 
-        int OnStateChanged( AudioSessionState NewState);
+        int OnStateChanged( AudioSessionStates NewState);
         [PreserveSig] 
-        int OnSessionDisconnected( AudioSessionDisconnectReason DisconnectReason);
+        int OnSessionDisconnected( AudioSessionDisconnectReasons DisconnectReason);
     }
 }
