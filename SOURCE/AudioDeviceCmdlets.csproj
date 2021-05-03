@@ -61,6 +61,8 @@
     <Compile Include="CoreAudioApi\AudioSessionManager.cs" />
     <Compile Include="CoreAudioApi\Enums\AudioSessionStates.cs" />
     <Compile Include="CoreAudioApi\AudioVolumeNotificationData.cs" />
+    <Compile Include="CoreAudioApi\MultiMediaDeviceEnumeratorCom.cs" />
+    <Compile Include="CoreAudioApi\PolicyConfigClientCom.cs" />
     <Compile Include="CoreAudioApi\Structs\AUDIO_VOLUME_NOTIFICATION_DATA.cs" />
     <Compile Include="CoreAudioApi\Structs\Blob.cs" />
     <Compile Include="CoreAudioApi\Enums\CLSCTX.cs" />
@@ -77,18 +79,18 @@
     <Compile Include="CoreAudioApi\Interfaces\IAudioSessionEnumerator.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IAudioSessionEvents.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IAudioSessionManager2.cs" />
-    <Compile Include="CoreAudioApi\Interfaces\IMMDevice.cs" />
-    <Compile Include="CoreAudioApi\Interfaces\IMMDeviceCollection.cs" />
-    <Compile Include="CoreAudioApi\Interfaces\IMMDeviceEnumerator.cs" />
-    <Compile Include="CoreAudioApi\Interfaces\IMMEndpoint.cs" />
+    <Compile Include="CoreAudioApi\Interfaces\IMultiMediaDevice.cs" />
+    <Compile Include="CoreAudioApi\Interfaces\IMultiMediaDeviceCollection.cs" />
+    <Compile Include="CoreAudioApi\Interfaces\IMultiMediaDeviceEnumerator.cs" />
+    <Compile Include="CoreAudioApi\Interfaces\IMultiMediaEndpoint.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IPolicyConfig.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IPolicyConfig10.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IPolicyConfigVista.cs" />
     <Compile Include="CoreAudioApi\Interfaces\IPropertyStore.cs" />
     <Compile Include="CoreAudioApi\Interfaces\ISimpleAudioVolume.cs" />
-    <Compile Include="CoreAudioApi\MMDevice.cs" />
-    <Compile Include="CoreAudioApi\MMDeviceCollection.cs" />
-    <Compile Include="CoreAudioApi\MMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudioApi\MultiMediaDevice.cs" />
+    <Compile Include="CoreAudioApi\MultiMediaDeviceCollection.cs" />
+    <Compile Include="CoreAudioApi\MultiMediaDeviceEnumerator.cs" />
     <Compile Include="CoreAudioApi\Structs\PKEY.cs" />
     <Compile Include="CoreAudioApi\PolicyConfigClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,7 +103,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="TestScripts\Test.ps1">
+    <None Include="Test.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -4,11 +4,6 @@ using AudioDeviceCmdlets.CoreAudioApi.Interfaces;
 
 namespace AudioDeviceCmdlets.CoreAudioApi
 {
-    [ComImport, Guid("870af99c-171d-4f9e-af0d-e63df40c2bc9")]
-    internal class _PolicyConfigClient
-    {
-    }
-
     public class PolicyConfigClient
     {
         private readonly IPolicyConfig _PolicyConfig;
@@ -17,15 +12,15 @@ namespace AudioDeviceCmdlets.CoreAudioApi
 
         public PolicyConfigClient()
         {
-            _PolicyConfig = new _PolicyConfigClient() as IPolicyConfig;
+            _PolicyConfig = new PolicyConfigClientCom() as IPolicyConfig;
             if (_PolicyConfig != null)
                 return;
 
-            _PolicyConfigVista = new _PolicyConfigClient() as IPolicyConfigVista;
+            _PolicyConfigVista = new PolicyConfigClientCom() as IPolicyConfigVista;
             if (_PolicyConfigVista != null)
                 return;
 
-            _PolicyConfig10 = new _PolicyConfigClient() as IPolicyConfig10;
+            _PolicyConfig10 = new PolicyConfigClientCom() as IPolicyConfig10;
         }
 
         public void SetDefaultEndpoint(string devID, DeviceRoles eRole)

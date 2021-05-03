@@ -20,15 +20,24 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+using System;
 using System.Runtime.InteropServices;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
-    [Guid("1BE09788-6894-4089-8586-9A2A6C265AC5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IMMEndpoint 
+    [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IMultiMediaDeviceEnumerator
     {
         [PreserveSig]
-        int GetDataFlow(out DataFlows pDataFlow);
-    }; 
+        int EnumAudioEndpoints(DataFlows dataFlow, DeviceStates StateMask, out IMultiMediaDeviceCollection device);
+        [PreserveSig]
+        int GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role, out IMultiMediaDevice ppEndpoint);
+        [PreserveSig]
+        int GetDevice(string pwstrId, out IMultiMediaDevice ppDevice);
+        [PreserveSig]
+        int RegisterEndpointNotificationCallback(IntPtr pClient);
+        [PreserveSig]
+        int UnregisterEndpointNotificationCallback(IntPtr pClient);
+    }
 }

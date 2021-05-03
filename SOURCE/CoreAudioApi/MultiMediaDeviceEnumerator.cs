@@ -28,38 +28,34 @@ using AudioDeviceCmdlets.CoreAudioApi.Interfaces;
 namespace AudioDeviceCmdlets.CoreAudioApi
 {
     //Marked as internal, since on its own its no good
-    [ComImport, Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
-    internal class _MMDeviceEnumerator
-    {
-    }
 
     //Small wrapper class
-    public class MMDeviceEnumerator 
+    public class MultiMediaDeviceEnumerator
     {
-        private IMMDeviceEnumerator _realEnumerator = new _MMDeviceEnumerator() as IMMDeviceEnumerator;
+        private readonly IMultiMediaDeviceEnumerator _realEnumerator = new MultiMediaDeviceEnumeratorCom() as IMultiMediaDeviceEnumerator;
 
-        public MMDeviceCollection EnumerateAudioEndPoints(DataFlows dataFlow, DeviceStates dwStateMask)
+        public MultiMediaDeviceCollection EnumerateAudioEndPoints(DataFlows dataFlow, DeviceStates dwStateMask)
         {
-            IMMDeviceCollection result;
+            IMultiMediaDeviceCollection result;
             Marshal.ThrowExceptionForHR(_realEnumerator.EnumAudioEndpoints(dataFlow,dwStateMask,out result));
-            return new MMDeviceCollection(result);
+            return new MultiMediaDeviceCollection(result);
         }
 
-        public MMDevice GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role)
+        public MultiMediaDevice GetDefaultAudioEndpoint(DataFlows dataFlow, DeviceRoles role)
         {
-            IMMDevice _Device = null;
-            Marshal.ThrowExceptionForHR(((IMMDeviceEnumerator)_realEnumerator).GetDefaultAudioEndpoint(dataFlow, role, out _Device));
-            return new MMDevice(_Device);
+            IMultiMediaDevice _Device = null;
+            Marshal.ThrowExceptionForHR(((IMultiMediaDeviceEnumerator)_realEnumerator).GetDefaultAudioEndpoint(dataFlow, role, out _Device));
+            return new MultiMediaDevice(_Device);
         }
 
-        public MMDevice GetDevice(string ID)
+        public MultiMediaDevice GetDevice(string ID)
         {
-            IMMDevice _Device = null;
-            Marshal.ThrowExceptionForHR(((IMMDeviceEnumerator)_realEnumerator).GetDevice(ID, out _Device));
-            return new MMDevice(_Device);
+            IMultiMediaDevice _Device = null;
+            Marshal.ThrowExceptionForHR(((IMultiMediaDeviceEnumerator)_realEnumerator).GetDevice(ID, out _Device));
+            return new MultiMediaDevice(_Device);
         }
 
-        public MMDeviceEnumerator()
+        public MultiMediaDeviceEnumerator()
         {
             if (System.Environment.OSVersion.Version.Major < 6)
             {

@@ -27,7 +27,7 @@ using AudioDeviceCmdlets.CoreAudioApi.Enums;
 namespace AudioDeviceCmdlets.CoreAudioApi.Interfaces
 {
     [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IMMDevice
+    internal interface IMultiMediaDevice
     {
         [PreserveSig]
         int Activate(ref Guid iid, CLSCTX dwClsCtx, IntPtr pActivationParams,  [MarshalAs(UnmanagedType.IUnknown)] out object  ppInterface);

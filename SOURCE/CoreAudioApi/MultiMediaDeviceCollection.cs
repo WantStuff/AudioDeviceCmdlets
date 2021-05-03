@@ -25,9 +25,9 @@ using AudioDeviceCmdlets.CoreAudioApi.Interfaces;
 
 namespace AudioDeviceCmdlets.CoreAudioApi
 {
-    public class MMDeviceCollection
+    public class MultiMediaDeviceCollection
     {
-        private IMMDeviceCollection _MMDeviceCollection;
+        private IMultiMediaDeviceCollection _MMDeviceCollection;
 
         public int Count
         {
@@ -39,17 +39,17 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             }
         }
 
-        public MMDevice this[int index]
+        public MultiMediaDevice this[int index]
         {
             get
             {
-                IMMDevice result;
+                IMultiMediaDevice result;
                 _MMDeviceCollection.Item((uint)index, out result);
-                return new MMDevice(result);
+                return new MultiMediaDevice(result);
             }
         }
 
-        internal MMDeviceCollection(IMMDeviceCollection parent)
+        internal MultiMediaDeviceCollection(IMultiMediaDeviceCollection parent)
         {
             _MMDeviceCollection = parent;
         }

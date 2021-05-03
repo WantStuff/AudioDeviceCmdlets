@@ -19,7 +19,7 @@ namespace AudioDeviceCmdlets
     // Class to interact with a MMDevice as an object with attributes
     public class AudioDevice
     {
-        // Order in which this MMDevice appeared from MMDeviceEnumerator
+        // Order in which this MMDevice appeared from MultiMediaDeviceEnumerator
         public int Index;
         // Default (for its Type) is either true or false
         public bool Default;
@@ -30,10 +30,10 @@ namespace AudioDeviceCmdlets
         // ID of the MMDevice ex: "{0.0.0.00000000}.{c4aadd95-74c7-4b3b-9508-b0ef36ff71ba}"
         public string ID;
         // The MMDevice itself
-        public MMDevice Device;
+        public MultiMediaDevice Device;
 
         // To be created, a new AudioDevice needs an Index, and the MMDevice it will communicate with
-        public AudioDevice(int Index, MMDevice BaseDevice, bool Default = false)
+        public AudioDevice(int Index, MultiMediaDevice BaseDevice, bool Default = false)
         {
             // Set this object's Index to the received integer
             this.Index = Index;
@@ -154,10 +154,10 @@ namespace AudioDeviceCmdlets
         // Cmdlet execution
         protected override void ProcessRecord()
         {
-            // Create a new MMDeviceEnumerator
-            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            // Create a new MultiMediaDeviceEnumerator
+            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the List switch parameter was called
             if (list)
@@ -413,10 +413,10 @@ namespace AudioDeviceCmdlets
         // Cmdlet execution
         protected override void ProcessRecord()
         {
-            // Create a new MMDeviceEnumerator
-            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            // Create a new MultiMediaDeviceEnumerator
+            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the InputObject parameter received a value
             if (inputObject != null)
@@ -576,10 +576,10 @@ namespace AudioDeviceCmdlets
         // Cmdlet execution
         protected override void ProcessRecord()
         {
-            // Create a new MMDeviceEnumerator
-            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            // Create a new MultiMediaDeviceEnumerator
+            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
             // Create a MMDeviceCollection of every devices that are enabled
-            MMDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
+            MultiMediaDeviceCollection DeviceCollection = DevEnum.EnumerateAudioEndPoints(DataFlows.All, DeviceStates.DEVICE_STATE_ACTIVE);
 
             // If the InputObject parameter received a value
             if (inputObject != null)
@@ -702,8 +702,8 @@ namespace AudioDeviceCmdlets
         // Cmdlet execution
         protected override void ProcessRecord()
         {
-            // Create a new MMDeviceEnumerator
-            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            // Create a new MultiMediaDeviceEnumerator
+            MultiMediaDeviceEnumerator DevEnum = new MultiMediaDeviceEnumerator();
 
             // If the PlaybackMeter parameter was called
             if (playbackmeter)
