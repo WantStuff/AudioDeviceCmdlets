@@ -20,41 +20,46 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AudioDeviceCmdlets.CoreAudioApi.Interfaces;
 
 namespace AudioDeviceCmdlets.CoreAudioApi
 {
     // ReSharper disable once InconsistentNaming
-    public class MMDeviceCollection
+    public class MMDeviceCollection : IEnumerable<MMDevice>
     {
         // See https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/
 
-        private readonly IMMDeviceCollection _mmDeviceCollection;
-
-        public int Count
-        {
-            get
-            {
-                uint result;
-                Marshal.ThrowExceptionForHR(_mmDeviceCollection.GetCount(out result));
-                return (int)result;
-            }
-        }
-
-        public MMDevice this[int index]
-        {
-            get
-            {
-                IMMDevice result;
-                _mmDeviceCollection.Item((uint)index, out result);
-                return new MMDevice(result);
-            }
-        }
+        private readonly List<MMDevice> _mmDevices;
 
         internal MMDeviceCollection(IMMDeviceCollection parent)
         {
-            _mmDeviceCollection = parent;
+            uint count;
+            Marshal.ThrowExceptionForHR(parent.GetCount(out count));
+
+            _mmDevices = new List<MMDevice>();
+            for (uint i = 0; i < count; i++)
+            {
+                IMMDevice result;
+                parent.Item(i, out result);
+                _mmDevices.Add(new MMDevice(result));
+            }
+        }
+
+        public MMDevice this[int index] => _mmDevices[index];
+
+        public int Count => _mmDevices.Count;
+
+        public IEnumerator<MMDevice> GetEnumerator()
+        {
+            return _mmDevices.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
