@@ -43,9 +43,10 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         private static Guid _audioSessionManagerGuid = typeof(IAudioSessionManager2).GUID;
 
 
-        internal MMDevice(IMMDevice realDevice)
+        internal MMDevice(IMMDevice realDevice, int index = -1)
         {
             _realDevice = realDevice;
+            Index = index;
         }
 
 
@@ -117,6 +118,8 @@ namespace AudioDeviceCmdlets.CoreAudioApi
                 return Result;
             }
         }
+
+        public int Index { get; }
 
         public DataFlows DataFlow
         {

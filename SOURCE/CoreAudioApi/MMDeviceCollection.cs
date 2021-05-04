@@ -20,6 +20,7 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -44,13 +45,18 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             {
                 IMMDevice result;
                 parent.Item(i, out result);
-                _mmDevices.Add(new MMDevice(result));
+                _mmDevices.Add(new MMDevice(result, (int)i + 1));
             }
         }
 
         public MMDevice this[int index] => _mmDevices[index];
 
         public int Count => _mmDevices.Count;
+
+        public MMDevice Find(Predicate<MMDevice> match)
+        {
+            return _mmDevices.Find(match);
+        }
 
         public IEnumerator<MMDevice> GetEnumerator()
         {
