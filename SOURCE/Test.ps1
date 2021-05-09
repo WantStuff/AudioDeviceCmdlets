@@ -1,4 +1,4 @@
-Import-Module $PSScriptRoot\AudioDeviceCmdlets.dll
+yImport-Module $PSScriptRoot\AudioDeviceCmdlets.dll
 
 Clear-Host
 
@@ -65,14 +65,14 @@ Write-Host ""
 Write-Host ""
 Write-Host "Set Default Multimedia Device using the pipeline"
 Write-Host "------------------------------------------------"
-Get-AudioDevice -List | Where Type -Like 'Playback' | Where Name -Like '*Astro MixAmp Pro Game*' | Set-AudioDevice -MultimediaDefault
+Get-AudioDevice -List | Where-Object Type -Like 'Playback' | Where-Object Name -Like '*Astro MixAmp Pro Game*' | Set-AudioDevice -MultimediaDefault
 
 
 Write-Host ""
 Write-Host ""
 Write-Host "Set Default Communication Device using the pipeline"
 Write-Host "---------------------------------------------------"
-Get-AudioDevice -List | Where Type -Like 'Playback' | Where Name -Like '*Astro MixAmp Pro Voice*' | Set-AudioDevice -CommunicationDefault
+Get-AudioDevice -List | Where-Object Type -Like 'Playback' | Where-Object Name -Like '*Astro MixAmp Pro Voice*' | Set-AudioDevice -CommunicationDefault
 
 
 Write-Host ""

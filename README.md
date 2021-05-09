@@ -157,8 +157,8 @@ Index                : 2
 Id                   : {0.0.0.00000000}.{91fbaacc-267c-4426-b6f5-fd0488aa0f4b}
 Name                 : Speakers/Headphones (Realtek(R) Audio)
 Type                 : Playback
-MultimediaDefault    : False
-CommunicationDefault : False
+MultimediaDefault    : True
+CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
