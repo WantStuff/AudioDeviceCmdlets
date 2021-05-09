@@ -45,7 +45,7 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             {
                 IMMDevice result;
                 parent.Item(i, out result);
-                _mmDevices.Add(new MMDevice(result, (int)i + 1));
+                _mmDevices.Add(new MMDevice(result, (int)i + 1, false, false));
             }
         }
 

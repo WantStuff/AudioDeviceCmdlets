@@ -10,62 +10,75 @@
 // To interact with MMDevice
 
 // To act as a PowerShell Cmdlet
+
+using System;
 using AudioDeviceCmdlets.CoreAudioApi;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets
 {
-    // Class to interact with a MMDevice as an object with attributes
     public class AudioDevice
     {
-        // To be created, a new AudioDevice needs an Index, and the MMDevice it will communicate with
-        public AudioDevice(int index, MMDevice baseDevice, bool isMultimediaDefault = false)
+        public AudioDevice(MMDevice baseDevice)
         {
-            // Set this object's Index to the received integer
-            Index = index;
+            Index = baseDevice.Index;
 
-            // Set this object's Default to the received boolean
-            Default = isMultimediaDefault;
-
-            // If the received MMDevice is a playback device
-            if (baseDevice.DataFlow == DataFlows.Render)
-            {
-                // Set this object's Type to "Playback"
-                Type = "Playback";
-            }
-            // If not, if the received MMDevice is a recording device
-            else if (baseDevice.DataFlow == DataFlows.Capture)
-            {
-                // Set this object's Type to "Recording"
-                Type = "Recording";
-            }
-
-            // Set this object's Name to that of the received MMDevice's FriendlyName
             Name = baseDevice.FriendlyName;
 
-            // Set this object's Device to the received MMDevice
-            Device = baseDevice;
+            Id = baseDevice.Id;
 
-            // Set this object's ID to that of the received MMDevice's ID
-            ID = baseDevice.ID;
+            switch (baseDevice.DataFlow)
+            {
+                case DataFlows.Render:
+                    Type = "Playback";
+                    break;
+                case DataFlows.Capture:
+                    Type = "Recording";
+                    break;
+            }
+
+            Default = baseDevice.IsMultimediaDefault;
+
+            CommunicationsDefault = baseDevice.IsCommunicationsDefault;
+
+            switch (baseDevice.State)
+            {
+                case DeviceStates.DEVICE_STATE_ACTIVE:
+                    State = "Active";
+                    break;
+                case DeviceStates.DEVICE_STATE_NOTPRESENT:
+                    State = "Not Present";
+                    break;
+                case DeviceStates.DEVICE_STATE_UNPLUGGED:
+                    State = "Unplugged";
+                    break;
+            }
+
+            Mute = baseDevice.AudioEndpointVolume.Mute;
+
+            Volume = (int) Math.Round(baseDevice.AudioEndpointVolume.MasterVolumeLevelScalar * 100, 0);
+
+            Device = baseDevice;
         }
 
-        // Order in which this MMDevice appeared from MultiMediaDeviceEnumerator
         public int Index;
 
-        // Default (for its Type) is either true or false
-        public bool Default;
+        public string Id;
 
-        // Type is either "Playback" or "Recording"
-        public string Type;
-
-        // Name of the MMDevice ex: "Speakers (Realtek High Definition Audio)"
         public string Name;
 
-        // ID of the MMDevice ex: "{0.0.0.00000000}.{c4aadd95-74c7-4b3b-9508-b0ef36ff71ba}"
-        public string ID;
+        public string Type;
 
-        // The MMDevice itself
+        public bool Default;
+
+        public bool CommunicationsDefault;
+
+        public string State;
+
+        public bool Mute;
+
+        public int Volume;
+
         public MMDevice Device;
     }
 }

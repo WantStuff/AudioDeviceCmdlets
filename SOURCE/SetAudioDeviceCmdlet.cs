@@ -1,27 +1,170 @@
 /*
-  Copyright (c) 2016-2018 Francois Gendron <fg@frgn.ca>
-  MIT License
-
-  AudioDeviceCmdlets.cs
-  AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows
+  Inspired by the work done by Francois Gendron <fg@frgn.ca>
   https://github.com/frgnca/AudioDeviceCmdlets
 */
 
-// To interact with MMDevice
-
-// To act as a PowerShell Cmdlet
-
+using System;
 using System.Management.Automation;
+using AudioDeviceCmdlets.CoreAudioApi;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets
 {
     [Cmdlet(VerbsCommon.Set, nameof(AudioDevice))]
-    public class SetAudioDeviceCmdlet : SetAudioDeviceCmdletBase
+    public class SetAudioDeviceCmdlet : Cmdlet
     {
-        public SetAudioDeviceCmdlet()
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(InputObject), ValueFromPipeline = true)]
+        public AudioDevice InputObject { get; set; }
+
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Id), ValueFromPipelineByPropertyName = true)]
+        public string Id { get; set; }
+
+        [ValidateRange(1, 42)]
+        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Index))]
+        public int? Index { get; set; }
+
+        [Alias("Default")]
+        [Parameter(Mandatory = false, Position = 1)]
+        public SwitchParameter DefaultMultimedia { get; set; }
+
+        [Parameter(Mandatory = false, Position = 1)]
+        public SwitchParameter DefaultCommunication { get; set; }
+
+        [Parameter(Mandatory = false, Position = 1)]
+        public bool? Mute { get; set; }
+
+        [Parameter(Mandatory = false, Position = 1)]
+        public SwitchParameter MuteToggle { get; set; }
+
+        [ValidateRange(0, 100.0f)]
+        [Parameter(Mandatory = false, Position = 1)]
+        public float? Volume { get; set; }
+
+
+        protected override void ProcessRecord()
         {
-            DeviceRole = DeviceRoles.Multimedia;
+
+            // Position 0 parameters
+            // ---------------------
+
+            MMDevice mmDevice = null;
+            if (InputObject != null)
+            {
+                mmDevice = GetMMDevice(InputObject);
+            }
+            else if (!string.IsNullOrEmpty(Id))
+            {
+                mmDevice = GetMMDevice(Id);
+            }
+            else if (Index.HasValue)
+            {
+                mmDevice = GetMMDevice(Index.Value);
+            }
+
+
+            // Position 1 parameters
+            // ---------------------
+
+            if ((!DefaultCommunication && !Mute.HasValue && !MuteToggle && !Volume.HasValue))
+            {
+                // If no position 1 parameters were set, default to DefaultMultimedia
+                DefaultMultimedia = true;
+            }
+
+            if (DefaultMultimedia)
+            {
+                SetDefault(mmDevice, DeviceRoles.Multimedia);
+            }
+
+            if (DefaultCommunication)
+            {
+                SetDefault(mmDevice, DeviceRoles.Communication);
+            }
+
+            if (Mute.HasValue)
+            {
+                SetMute(mmDevice, Mute.Value);
+            }
+
+            if (MuteToggle)
+            {
+                ToggleMute(mmDevice);
+            }
+
+            if (Volume.HasValue)
+            {
+                SetVolume(mmDevice, Volume.Value);
+            }
+        }
+
+
+        private static MMDevice GetMMDevice(AudioDevice inputObject)
+        {
+            var deviceRepo = new MMDeviceRepository();
+
+            var mmDevice = deviceRepo.Find(x => x.Id == inputObject.Id);
+            if (mmDevice == null)
+            {
+                throw new ArgumentException("No such enabled AudioDevice found");
+            }
+
+            return mmDevice;
+        }
+
+        private static MMDevice GetMMDevice(string id)
+        {
+            var deviceRepo = new MMDeviceRepository();
+
+            var mmDevice = deviceRepo.Find(x => x.Id == id);
+            if (mmDevice == null)
+            {
+                throw new ArgumentException("No enabled AudioDevice found with that ID");
+            }
+
+            return mmDevice;
+        }
+
+        private static MMDevice GetMMDevice(int index)
+        {
+            var deviceRepo = new MMDeviceRepository();
+
+            var mmDevice = deviceRepo.Find(x => x.Index == index);
+            if (mmDevice == null)
+            {
+                throw new ArgumentException("No enabled AudioDevice found with that Index");
+            }
+
+            return mmDevice;
+        }
+
+
+        private void SetDefault(MMDevice mmDevice, DeviceRoles deviceRole)
+        {
+            var client = new PolicyConfigClient();
+            client.SetDefaultEndpoint(mmDevice.Id, deviceRole);
+
+            WriteObject(new AudioDevice(mmDevice));
+        }
+
+        private void SetMute(MMDevice mmDevice, bool mute)
+        {
+            mmDevice.AudioEndpointVolume.Mute = mute;
+
+            WriteObject(new AudioDevice(mmDevice));
+        }
+
+        private void ToggleMute(MMDevice mmDevice)
+        {
+            mmDevice.AudioEndpointVolume.Mute = !mmDevice.AudioEndpointVolume.Mute;
+
+            WriteObject(new AudioDevice(mmDevice));
+        }
+
+        private void SetVolume(MMDevice mmDevice, float playbackVolume)
+        {
+            mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = playbackVolume / 100.0f;
+
+            WriteObject(new AudioDevice(mmDevice));
         }
     }
 }

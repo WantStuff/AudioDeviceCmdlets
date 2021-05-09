@@ -48,14 +48,14 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         {
             IMMDevice _Device = null;
             Marshal.ThrowExceptionForHR(((IMMDeviceEnumerator)_realEnumerator).GetDefaultAudioEndpoint(dataFlow, role, out _Device));
-            return new MMDevice(_Device);
+            return new MMDevice(_Device, -1, false, false);
         }
 
         public MMDevice GetDevice(string ID)
         {
             IMMDevice _Device = null;
             Marshal.ThrowExceptionForHR(((IMMDeviceEnumerator)_realEnumerator).GetDevice(ID, out _Device));
-            return new MMDevice(_Device);
+            return new MMDevice(_Device, -1, false, false);
         }
 
         public MMDeviceEnumerator()

@@ -43,10 +43,22 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         private static Guid _audioSessionManagerGuid = typeof(IAudioSessionManager2).GUID;
 
 
-        internal MMDevice(IMMDevice realDevice, int index = -1)
+        internal MMDevice(IMMDevice realDevice, int index, bool isCommunicationsDefault, bool isMultimediaDefault)
         {
             _realDevice = realDevice;
             Index = index;
+            IsCommunicationsDefault = isCommunicationsDefault;
+            IsMultimediaDefault = isMultimediaDefault;
+        }
+
+        internal MMDevice(IMMDevice realDevice, int index, string defaultCommunicationsPlaybackId, string defaultCommunicationsRecordingId, string defaultMultimediaPlaybackId, string defaultMultimediaRecordingId)
+        {
+            _realDevice = realDevice;
+            Index = index;
+
+            var id = Id;
+            IsCommunicationsDefault = defaultCommunicationsPlaybackId == id || defaultCommunicationsRecordingId == id;
+            IsMultimediaDefault = defaultMultimediaPlaybackId == id || defaultMultimediaRecordingId == id;
         }
 
 
@@ -83,12 +95,17 @@ namespace AudioDeviceCmdlets.CoreAudioApi
             }
         }
 
-        public PropertyStore Properties
+        public PropertyStore PropertyStore
         {
             get
             {
                 if (_propertyStore == null)
-                    GetPropertyInformation();
+                {
+                    IPropertyStore propertyStore;
+                    Marshal.ThrowExceptionForHR(_realDevice.OpenPropertyStore(StgmAccesses.STGM_READ, out propertyStore));
+                    _propertyStore = new PropertyStore(propertyStore);
+                }
+
                 return _propertyStore;
             }
         }
@@ -97,19 +114,19 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         {
             get
             {
-                if (_propertyStore == null)
-                    GetPropertyInformation();
-                if (_propertyStore.Contains(PKEY.PKEY_DeviceInterface_FriendlyName))
+                try
                 {
-                   return (string)_propertyStore[PKEY.PKEY_DeviceInterface_FriendlyName].Value;
+                    return (string) PropertyStore[PKEY.PKEY_DeviceInterface_FriendlyName].Value;
                 }
-                else
-                    return "Unknown";
+                catch
+                {
+                    return null;
+                }
             }
         }
 
 
-        public string ID
+        public string Id
         {
             get
             {
@@ -120,6 +137,10 @@ namespace AudioDeviceCmdlets.CoreAudioApi
         }
 
         public int Index { get; }
+
+        public bool IsCommunicationsDefault { get; }
+
+        public bool IsMultimediaDefault { get; }
 
         public DataFlows DataFlow
         {
@@ -139,17 +160,9 @@ namespace AudioDeviceCmdlets.CoreAudioApi
                 DeviceStates Result;
                 Marshal.ThrowExceptionForHR(_realDevice.GetState(out Result));
                 return Result;
-
             }
         }
 
-
-        private void GetPropertyInformation()
-        {
-            IPropertyStore propstore;
-            Marshal.ThrowExceptionForHR(_realDevice.OpenPropertyStore(StgmAccesses.STGM_READ, out propstore));
-            _propertyStore = new PropertyStore(propstore);
-        }
 
         private void GetAudioSessionManager()
         {
