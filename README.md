@@ -2,15 +2,16 @@
 
 ## Description
 
-AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows
+AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows.
+
+Forked from Francois Gendron's [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets) to add/improve feature.
 
 ## Features
 
-* Get list of all audio devices
-* Get default audio device (playback/recording/mulimedia/communication)
-* Get volume and mute state of an audio device
-* Set default audio device (playback/recording/mulimedia/communication)
-* Set volume and mute state of an audio device
+* List all audio devices
+* Get or Set the default playback or recording multimedia device
+* Get or Set the default playback or recording communications device
+* Get or Set volume and mute state of an audio device
 
 ## Import Cmdlet to PowerShell
 
