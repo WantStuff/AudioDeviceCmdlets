@@ -1,15 +1,7 @@
 /*
-  Copyright (c) 2016-2018 Francois Gendron <fg@frgn.ca>
-  MIT License
-
-  AudioDeviceCmdlets.cs
-  AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows
+  Based on the work done by Francois Gendron <fg@frgn.ca>
   https://github.com/frgnca/AudioDeviceCmdlets
 */
-
-// To interact with MMDevice
-
-// To act as a PowerShell Cmdlet
 
 using System;
 using AudioDeviceCmdlets.CoreAudioApi;

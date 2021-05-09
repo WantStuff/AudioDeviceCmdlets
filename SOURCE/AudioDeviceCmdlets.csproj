@@ -47,8 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioDevice.cs" />
+    <Compile Include="CoreAudioApi\MMDeviceEnumeratorCom.cs" />
     <Compile Include="CoreAudioApi\MMDeviceRepository.cs" />
-    <Compile Include="WriteAudioDeviceCmdlet.cs" />
     <Compile Include="CoreAudioApi\AudioEndpointVolume.cs" />
     <Compile Include="CoreAudioApi\AudioEndpointVolumeCallback.cs" />
     <Compile Include="CoreAudioApi\AudioEndpointVolumeChannel.cs" />
@@ -63,7 +63,6 @@
     <Compile Include="CoreAudioApi\AudioSessionManager.cs" />
     <Compile Include="CoreAudioApi\Enums\AudioSessionStates.cs" />
     <Compile Include="CoreAudioApi\AudioVolumeNotificationData.cs" />
-    <Compile Include="CoreAudioApi\MMDeviceEnumeratorCom.cs" />
     <Compile Include="CoreAudioApi\PolicyConfigClientCom.cs" />
     <Compile Include="CoreAudioApi\Structs\AUDIO_VOLUME_NOTIFICATION_DATA.cs" />
     <Compile Include="CoreAudioApi\Structs\Blob.cs" />
@@ -91,8 +90,6 @@
     <Compile Include="CoreAudioApi\Interfaces\IPropertyStore.cs" />
     <Compile Include="CoreAudioApi\Interfaces\ISimpleAudioVolume.cs" />
     <Compile Include="CoreAudioApi\MMDevice.cs" />
-    <Compile Include="CoreAudioApi\MMDeviceCollection.cs" />
-    <Compile Include="CoreAudioApi\MMDeviceEnumerator.cs" />
     <Compile Include="CoreAudioApi\Structs\PKEY.cs" />
     <Compile Include="CoreAudioApi\PolicyConfigClient.cs" />
     <Compile Include="GetAudioDeviceCmdlet.cs" />
