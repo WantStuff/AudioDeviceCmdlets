@@ -15,7 +15,7 @@ A simplified and enhanced fork of the project by Francois Gendron's [AudioDevice
 
 ## Import Cmdlet to PowerShell
 
-Build `AudioDeviceCmdlets.dll` in [Visual Studio](#Build-Cmdlet-from-source).
+Download a pre-build copy of [AudioDeviceCmdlets.dll](https://github.com/WantStuff/AudioDeviceCmdlets/releases/download/5.0/AudioDeviceCmdlets.dll) or use Visual Studio to [build](#Build-Cmdlet-from-source) your own.
 
 ```PowerShell
 New-Item "$($profile | split-path)\Modules\AudioDeviceCmdlets" -Type directory -Force
@@ -167,35 +167,14 @@ Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 ## Build Cmdlet from source
 
-1. Using Visual Studio Community, create new project from SOURCE folder  
-File -> New -> Project From Existing Code...
+1. Using Visual Studio, open the Solution from the `SOURCE` folder  
+File -> Open -> Project/Solution...
   
-    Type of project: Visual C#
-    Folder: SOURCE
-    Name: AudioDeviceCmdlets
-    Output type: Class Library
-
-2. Install System.Management.Automation NuGet package  
-Project -> Manage NuGet Packages...
-
-    Browse: System.Management.Automation
-    Install: v6.3+
-
-3. Set project properties  
-Project -> AudioDeviceCmdlets Properties...
-
-    Assembly name: AudioDeviceCmdlets
-    Target framework: .NET Framework 4.5+
-
-4. Set solution configuration  
+2. Set solution configuration to 'Release'  
 Build -> Configuration Manager...
 
-    Active solution configuration: Release
-
-5. Build Cmdlet  
+3. Build Cmdlet  
 Build -> Build AudioDeviceCmdlets
-
-    AudioDeviceCmdlets\bin\Release\AudioDeviceCmdlets.dll
 
 ## Attribution
 
