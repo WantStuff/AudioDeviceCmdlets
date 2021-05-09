@@ -23,12 +23,11 @@ namespace AudioDeviceCmdlets
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Index))]
         public int? Index { get; set; }
 
-        [Alias("Default")]
         [Parameter(Mandatory = false, Position = 1)]
-        public SwitchParameter DefaultMultimedia { get; set; }
+        public SwitchParameter MultimediaDefault { get; set; }
 
         [Parameter(Mandatory = false, Position = 1)]
-        public SwitchParameter DefaultCommunication { get; set; }
+        public SwitchParameter CommunicationDefault { get; set; }
 
         [Parameter(Mandatory = false, Position = 1)]
         public bool? Mute { get; set; }
@@ -65,18 +64,18 @@ namespace AudioDeviceCmdlets
             // Position 1 parameters
             // ---------------------
 
-            if ((!DefaultCommunication && !Mute.HasValue && !MuteToggle && !Volume.HasValue))
+            if ((!CommunicationDefault && !Mute.HasValue && !MuteToggle && !Volume.HasValue))
             {
                 // If no position 1 parameters were set, default to DefaultMultimedia
-                DefaultMultimedia = true;
+                MultimediaDefault = true;
             }
 
-            if (DefaultMultimedia)
+            if (MultimediaDefault)
             {
                 SetDefault(mmDevice, DeviceRoles.Multimedia);
             }
 
-            if (DefaultCommunication)
+            if (CommunicationDefault)
             {
                 SetDefault(mmDevice, DeviceRoles.Communication);
             }
@@ -95,6 +94,8 @@ namespace AudioDeviceCmdlets
             {
                 SetVolume(mmDevice, Volume.Value);
             }
+
+            WriteObject(new AudioDevice(mmDevice));
         }
 
 
@@ -142,29 +143,21 @@ namespace AudioDeviceCmdlets
         {
             var client = new PolicyConfigClient();
             client.SetDefaultEndpoint(mmDevice.Id, deviceRole);
-
-            WriteObject(new AudioDevice(mmDevice));
         }
 
         private void SetMute(MMDevice mmDevice, bool mute)
         {
             mmDevice.AudioEndpointVolume.Mute = mute;
-
-            WriteObject(new AudioDevice(mmDevice));
         }
 
         private void ToggleMute(MMDevice mmDevice)
         {
             mmDevice.AudioEndpointVolume.Mute = !mmDevice.AudioEndpointVolume.Mute;
-
-            WriteObject(new AudioDevice(mmDevice));
         }
 
         private void SetVolume(MMDevice mmDevice, float playbackVolume)
         {
             mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = playbackVolume / 100.0f;
-
-            WriteObject(new AudioDevice(mmDevice));
         }
     }
 }

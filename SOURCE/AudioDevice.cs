@@ -29,9 +29,9 @@ namespace AudioDeviceCmdlets
                     break;
             }
 
-            Default = baseDevice.IsMultimediaDefault;
+            MultimediaDefault = baseDevice.IsMultimediaDefault;
 
-            CommunicationsDefault = baseDevice.IsCommunicationsDefault;
+            CommunicationDefault = baseDevice.IsCommunicationsDefault;
 
             switch (baseDevice.State)
             {
@@ -61,9 +61,9 @@ namespace AudioDeviceCmdlets
 
         public string Type;
 
-        public bool Default;
+        public bool MultimediaDefault;
 
-        public bool CommunicationsDefault;
+        public bool CommunicationDefault;
 
         public string State;
 

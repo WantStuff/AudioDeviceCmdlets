@@ -5,9 +5,7 @@
 
 using System;
 using System.Management.Automation;
-using System.Runtime.CompilerServices;
 using AudioDeviceCmdlets.CoreAudioApi;
-using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
 namespace AudioDeviceCmdlets
 {
@@ -25,20 +23,6 @@ namespace AudioDeviceCmdlets
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(Index))]
         public int Index { get; set; }
 
-        [Alias("Playback")]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(MultimediaPlayback))]
-        public SwitchParameter MultimediaPlayback { get; set; }
-
-        [Alias("Recording")]
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(MultimediaRecording))]
-        public SwitchParameter MultimediaRecording { get; set; }
-
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(CommunicationPlayback))]
-        public SwitchParameter CommunicationPlayback { get; set; }
-
-        [Parameter(Mandatory = true, Position = 0, ParameterSetName = nameof(CommunicationRecording))]
-        public SwitchParameter CommunicationRecording { get; set; }
-
 
         protected override void ProcessRecord()
         {
@@ -51,30 +35,6 @@ namespace AudioDeviceCmdlets
             if (Index > 0)
             {
                 GetDeviceByIndex(Index);
-                return;
-            }
-
-            if (MultimediaPlayback)
-            {
-                GetPlaybackDevice(DeviceRoles.Multimedia);
-                return;
-            }
-
-            if (MultimediaRecording)
-            {
-                GetRecordingDevice(DeviceRoles.Multimedia);
-                return;
-            }
-
-            if (CommunicationPlayback)
-            {
-                GetPlaybackDevice(DeviceRoles.Communication);
-                return;
-            }
-
-            if (CommunicationRecording)
-            {
-                GetRecordingDevice(DeviceRoles.Communication);
                 return;
             }
 
@@ -113,32 +73,6 @@ namespace AudioDeviceCmdlets
             if (mmDevice == null)
             {
                 throw new ArgumentException("No AudioDevice with that Index");
-            }
-
-            WriteObject(new AudioDevice(mmDevice));
-        }
-
-        private void GetPlaybackDevice(DeviceRoles deviceRole)
-        {
-            var deviceRepo = new MMDeviceRepository();
-
-            var mmDevice = deviceRepo.GetDefaultPlaybackDevice(deviceRole);
-            if (mmDevice == null)
-            {
-                throw new ArgumentException("No default playback found");
-            }
-
-            WriteObject(new AudioDevice(mmDevice));
-        }
-
-        private void GetRecordingDevice(DeviceRoles deviceRole)
-        {
-            var deviceRepo = new MMDeviceRepository();
-
-            var mmDevice = deviceRepo.GetDefaultRecordingDevice(deviceRole);
-            if (mmDevice == null)
-            {
-                throw new ArgumentException("No default recording device found");
             }
 
             WriteObject(new AudioDevice(mmDevice));
