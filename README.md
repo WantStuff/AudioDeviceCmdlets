@@ -4,7 +4,7 @@
 
 AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows.
 
-A simplified and enhanced fork of the project by Francois Gendron's [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets).
+This is a fork of the work by Francois Gendron's [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets) with an overhauled and simplified user interface, and additional features to manage Communications devices.
 
 ## Features
 
