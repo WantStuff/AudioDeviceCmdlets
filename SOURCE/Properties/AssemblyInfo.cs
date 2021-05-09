@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AudioDeviceCmdlets")]
 [assembly: AssemblyDescription("AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("frgn.ca")]
+[assembly: AssemblyCompany("WantStuff")]
 [assembly: AssemblyProduct("AudioDeviceCmdlets")]
-[assembly: AssemblyCopyright("Copyright (c) 2016-2018 Francois Gendron <fg@frgn.ca>")]
+[assembly: AssemblyCopyright("Copyright (c) 2021 Martin Henning")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("5.0.0.0")]
+[assembly: AssemblyFileVersion("5.0.0.0")]
