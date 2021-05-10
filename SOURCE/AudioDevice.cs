@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Management.Automation;
 using AudioDeviceCmdlets.CoreAudioApi;
 using AudioDeviceCmdlets.CoreAudioApi.Enums;
 
@@ -71,6 +72,7 @@ namespace AudioDeviceCmdlets
 
         public int Volume;
 
+        [Hidden]
         public MMDevice Device;
     }
 }
