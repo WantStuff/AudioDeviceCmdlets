@@ -62,7 +62,6 @@ CommunicationDefault : False
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 2
 Id                   : {0.0.0.00000000}.{91fbaacc-267c-4426-b6f5-fd0488aa0f4b}
@@ -73,7 +72,6 @@ CommunicationDefault : False
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 3
 Id                   : {0.0.0.00000000}.{a5fbb7af-4b5d-4fef-a115-b23e9f471039}
@@ -84,7 +82,6 @@ CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 4
 Id                   : {0.0.1.00000000}.{a84fb96c-2424-49f6-b1c3-9fa8f553c791}
@@ -95,7 +92,6 @@ CommunicationDefault : False
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 5
 Id                   : {0.0.1.00000000}.{b55928b7-618c-4906-ab4b-bb5ac12626ba}
@@ -106,7 +102,6 @@ CommunicationDefault : False
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 6
 Id                   : {0.0.1.00000000}.{e5e7230f-7c5e-4fda-881f-9e6f3cf1f618}
@@ -117,7 +112,6 @@ CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 ```
 
 ### Get-AudioDevice | Where-Object
@@ -134,7 +128,6 @@ CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 
 Index                : 6
 Id                   : {0.0.1.00000000}.{e5e7230f-7c5e-4fda-881f-9e6f3cf1f618}
@@ -145,7 +138,6 @@ CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 ```
 
 ### Set-AudioDevice -MultimediaDefault -CommunicationDefault
@@ -162,7 +154,6 @@ CommunicationDefault : True
 State                : Active
 Mute                 : False
 Volume               : 100
-Device               : AudioDeviceCmdlets.CoreAudioApi.MMDevice
 ```
 
 ## Build Cmdlet from source
