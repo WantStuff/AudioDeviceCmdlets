@@ -1,4 +1,4 @@
-yImport-Module $PSScriptRoot\AudioDeviceCmdlets.dll
+Import-Module $PSScriptRoot\AudioDeviceCmdlets.dll
 
 Clear-Host
 
