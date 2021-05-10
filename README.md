@@ -15,7 +15,7 @@ This is a fork of the work by Francois Gendron's [AudioDeviceCmdlets](https://gi
 
 ## Import Cmdlet to PowerShell
 
-Download a pre-build copy of [AudioDeviceCmdlets.dll](https://github.com/WantStuff/AudioDeviceCmdlets/releases/download/5.0/AudioDeviceCmdlets.dll) or use Visual Studio to [build](#Build-Cmdlet-from-source) your own.
+Download a pre-build copy of [AudioDeviceCmdlets.dll](https://github.com/WantStuff/AudioDeviceCmdlets/releases/download/5.0.1/AudioDeviceCmdlets.dll) or use Visual Studio to [build](#Build-Cmdlet-from-source) your own.
 
 ```PowerShell
 New-Item "$($profile | split-path)\Modules\AudioDeviceCmdlets" -Type directory -Force
