@@ -9,8 +9,8 @@ This is a fork of the work by Francois Gendron's [AudioDeviceCmdlets](https://gi
 ## Features
 
 * List all audio devices
-* Get or Set the default playback or recording multimedia device
-* Get or Set the default playback or recording communications device
+* Get or Set the default playback or recording **multimedia** device
+* Get or Set the default playback or recording **communications** device
 * Get or Set volume and mute state of an audio device
 
 ## Import Cmdlet to PowerShell
